@@ -1,33 +1,162 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Components from "./components";
-// import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function Login() {
-  const [signIn, toggle] = React.useState(true);
+  const navigate = useNavigate();
+  const [signIn, toggle] = useState(true);
+
+  const [userDetails, setUserDetatils] = useState({
+    fullName: "",
+    registrationNo: "",
+    branch: "",
+    email: "",
+    password: "",
+  });
+
+  // const Register = () => {
+  //   const [userDetails, setUserDetatils] = useState({
+  //     name: "",
+  //     registration: "",
+  //     branch: "",
+  //     email: "",
+  //     password:""
+  //   });
+
+  //   const [message, setMessage] = useState({
+  //     type: "invisible-msg",
+  //     text: "empty",
+  //   });
+
+  function handleInput(event) {
+    setUserDetatils((prevState) => {
+      return { ...prevState, [event.target.name]: event.target.value };
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(userDetails);
+    fetch("https://library-mtu.vercel.app/api/student", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(userDetails),
+      headers: {
+        "content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success === true) {
+          toast("Send Otp at email");
+          navigate("/otp");
+        }
+        console.log(data);
+        setUserDetatils({
+          fullName: "",
+          email: "",
+          password: "",
+          registrationNo: "",
+          branch: "",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  //    function handleSubmit(event) {
+  //   event.preventDefault();
+  //   console.log(userDetails);
+
+  //   fetch("http://localhost:8000/register", {
+  //     method: "POST",
+  //     body: JSON.stringify(userDetails),
+  //     headers: {
+  //       "content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setMessage({ type: "Success", text: data.message });
+  //       setUserDetatils({
+  //         name: "",
+  //         email: "",
+  //         password: "",
+  //         age: "",
+  //       });
+  //       setTimeout(() => {
+  //         setMessage({ type: "invisible-msg", text: "empty" });
+  //       }, 3000);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+  const [branch, setBranch] = useState([]);
+  // // const [email, setBranch] = useState("");
+
+  useEffect(() => {
+    const fetchBranch = async () => {
+      const res = await fetch("https://library-mtu.vercel.app/api/branch");
+      const data = await res.json();
+      setBranch(data.data);
+    };
+    fetchBranch();
+  }, []);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // };
+
   return (
     <div className="register">
       <Components.Container>
         <Components.SignUpContainer signinin={signIn}>
-          <Components.Form>
+          <Components.Form onSubmit={handleSubmit}>
             <Components.Title>REGISTER</Components.Title>
             <Components.Register>
               Let’s Go To Our Books World
             </Components.Register>
-            <Components.Input required type="text" placeholder="Username" />
             <Components.Input
+              name="fullName"
               required
+              onChange={handleInput}
+              type="text"
+              placeholder="Username"
+            />
+            <Components.Input
+              onChange={handleInput}
+              required
+              name="registrationNo"
               maxLength={10}
               type="text"
               placeholder="Registration number"
             />
-            <Components.Input required type="text" placeholder="Branch" />
+            <Components.Select onChange={handleInput} name="branch">
+              <option value="select">Select Branch</option>
+              {branch &&
+                branch.map((each) => {
+                  return (
+                    <option key={each._id} value={each._id}>
+                      {each.name}
+                    </option>
+                  );
+                })}
+            </Components.Select>
             <Components.Input
+              onChange={handleInput}
+              name="email"
               required
               pattern=".+@mtu\.ac\.in$"
               type="email"
               placeholder="Enter Your MTU email"
             />
             <Components.Input
+              onChange={handleInput}
               required
+              name="password"
               maxLength={8}
               type="password"
               placeholder="Password"
@@ -63,7 +192,7 @@ function Login() {
 
         <Components.OverlayContainer signinin={signIn}>
           <Components.Overlay signinin={signIn}>
-            <Components.LeftOverlayPanel signinIn={signIn}>
+            <Components.LeftOverlayPanel signinin={signIn}>
               {/* <Components.Title>Welcome Back!</Components.Title> */}
               <Components.Box>
                 <Components.Paragraph>

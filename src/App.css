@@ -8,16 +8,11 @@
 
 body {
   background: #dfe9f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   font-family: "Montserrat", sans-serif;
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
   overflow-y: hidden;
-  /* margin: -20px 0 50px; */
 }
 .register {
   width: 100vw;
@@ -25,4 +20,95 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.otpbody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* flex-direction: column; */
+  width: 100vw;
+  height: 100vh;
+}
+.otp-box {
+  width: 350px;
+  height: 400px;
+  background-color: white;
+  border-radius: 50px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  position: relative;
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+}
+.logo1 {
+  width: 100%;
+  height: fit-content;
+  /* background-color: yellow; */
+  display: flex;
+  justify-content: center;
+}
+.logo {
+  width: 80px;
+  height: 80px;
+  margin: 20px 0px 5px 0px;
+}
+.verification {
+  width: 100%;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+}
+.otpText {
+  font-weight: bold;
+}
+.verify {
+  display: flex;
+  justify-content: center;
+  /* background-color: gray; */
+  position: absolute;
+}
+.otpText2 {
+  font-size: 10px;
+  margin-left: 27px;
+  margin-top: -11px;
+}
+.otp-area {
+  width: 70%;
+  margin: 20px 59px;
+  display: flex;
+  gap: 10px;
+
+  input {
+    background-color: rgb(239, 233, 233);
+    width: 50px;
+    padding: 10px;
+    outline: none;
+    border-radius: 10px;
+    text-align: center;
+    border: white;
+
+    &:focus {
+      border: 1px solid rgb(190, 187, 187);
+    }
+  }
+}
+.otp-button {
+  background-color: blue;
+  border: none;
+  padding: 8px 80px;
+  border-radius: 10px;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  &:hover {
+    background-color: rgb(50, 50, 208);
+  }
+}
+.otp-not-receive {
+  font-size: 12px;
+  margin: 10px 0px 18px 0px;
+}
+a {
+  text-decoration: none;
 }

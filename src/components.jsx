@@ -78,6 +78,15 @@ export const Input = styled.input`
   width: 100%;
 `;
 
+export const Select = styled.select`
+  background-color: #eee;
+  border: none;
+  padding: 10px 15px;
+  margin: 8px 0;
+  border-radius: 10px;
+  width: 100%;
+`;
+
 export const Button = styled.button`
   border-radius: 20px;
   border: 1px solid #59d3e6;
