@@ -2,7 +2,7 @@ import React from "react";
 // import { Link } from "react-router-dom";
 
 function Loginnew() {
-  const [signIn, toggle] = React.useState(true);
+  // const [signIn, toggle] = React.useState(true);
   return (
     <div className="container">
       <div className="signUpContainer">

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as Components from "./components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Login() {
@@ -14,20 +14,6 @@ function Login() {
     email: "",
     password: "",
   });
-
-  // const Register = () => {
-  //   const [userDetails, setUserDetatils] = useState({
-  //     name: "",
-  //     registration: "",
-  //     branch: "",
-  //     email: "",
-  //     password:""
-  //   });
-
-  //   const [message, setMessage] = useState({
-  //     type: "invisible-msg",
-  //     text: "empty",
-  //   });
 
   function handleInput(event) {
     setUserDetatils((prevState) => {
@@ -66,34 +52,6 @@ function Login() {
       });
   }
 
-  //    function handleSubmit(event) {
-  //   event.preventDefault();
-  //   console.log(userDetails);
-
-  //   fetch("http://localhost:8000/register", {
-  //     method: "POST",
-  //     body: JSON.stringify(userDetails),
-  //     headers: {
-  //       "content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setMessage({ type: "Success", text: data.message });
-  //       setUserDetatils({
-  //         name: "",
-  //         email: "",
-  //         password: "",
-  //         age: "",
-  //       });
-  //       setTimeout(() => {
-  //         setMessage({ type: "invisible-msg", text: "empty" });
-  //       }, 3000);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
   const [branch, setBranch] = useState([]);
   // // const [email, setBranch] = useState("");
 

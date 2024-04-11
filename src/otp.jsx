@@ -44,8 +44,8 @@ function Otp() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success === true) {
-          navigate("/book");
-          toast("Otp Verified");
+          navigate("/books");
+          // toast("Otp Verified");
         }
       });
   };
