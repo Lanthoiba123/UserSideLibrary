@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer draggablePercent={60} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />

@@ -34,14 +34,16 @@ function Login() {
       return { ...prevState, [event.target.name]: event.target.value };
     });
   }
-
+  //http://localhost:8080/api/student
   function handleSubmit(e) {
     e.preventDefault();
+    const id = toast.loading("Please wait...");
+
     console.log(userDetails);
     fetch("https://library-mtu.vercel.app/api/student", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(userDetails),
+      credentials: "include",
       headers: {
         "content-Type": "application/json",
       },
@@ -49,7 +51,12 @@ function Login() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success === true) {
-          toast("Send Otp at email");
+          toast.update(id, {
+            render: "OTP is sent",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          });
           navigate("/otp");
         }
         console.log(data);
@@ -62,7 +69,16 @@ function Login() {
         });
       })
       .catch((err) => {
-        console.log(err);
+        if (err) {
+          toast.update(id, {
+            render: "Error rendering",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
+        }
+        console.log(err.message);
+        toast.error(err.message);
       });
   }
 
@@ -113,7 +129,7 @@ function Login() {
   return (
     <div className="register">
       <Components.Container>
-        <Components.SignUpContainer signinin={signIn}>
+        <Components.SignUpContainer signinin={signIn ? 1 : 0}>
           <Components.Form onSubmit={handleSubmit}>
             <Components.Title>REGISTER</Components.Title>
             <Components.Register>
@@ -165,7 +181,7 @@ function Login() {
           </Components.Form>
         </Components.SignUpContainer>
 
-        <Components.SignInContainer signinin={signIn}>
+        <Components.SignInContainer signinin={signIn ? 1 : 0}>
           <Components.Form>
             <Components.Title>LOGIN NOW</Components.Title>
             <Components.Register>
@@ -190,9 +206,9 @@ function Login() {
           </Components.Form>
         </Components.SignInContainer>
 
-        <Components.OverlayContainer signinin={signIn}>
-          <Components.Overlay signinin={signIn}>
-            <Components.LeftOverlayPanel signinin={signIn}>
+        <Components.OverlayContainer signinin={signIn ? 1 : 0}>
+          <Components.Overlay signinin={signIn ? 1 : 0}>
+            <Components.LeftOverlayPanel signinin={signIn ? 1 : 0}>
               {/* <Components.Title>Welcome Back!</Components.Title> */}
               <Components.Box>
                 <Components.Paragraph>
@@ -206,7 +222,7 @@ function Login() {
               </Components.GhostButton>
             </Components.LeftOverlayPanel>
 
-            <Components.RightOverlayPanel signinin={signIn}>
+            <Components.RightOverlayPanel signinin={signIn ? 1 : 0}>
               {/* <Components.Title>Hello, Friend!</Components.Title> */}
               <Components.Box2>
                 <Components.Paragraph2>

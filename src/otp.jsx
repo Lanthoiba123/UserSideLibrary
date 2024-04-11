@@ -33,7 +33,8 @@ function Otp() {
     const objectOtp = {
       otp: stringOtp,
     };
-    fetch("https://library-mtu.vercel.app/api/student/verify", {
+    console.log(objectOtp);
+    fetch("http://localhost:8080/api/student/verify", {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(objectOtp),
