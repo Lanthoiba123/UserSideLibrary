@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800"); */
 
 @layer base {
   :root {
@@ -74,8 +75,6 @@
     @apply bg-background text-foreground;
   }
 }
-
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 * {
   box-sizing: border-box;
@@ -203,13 +202,15 @@ main {
   /* padding: 20px; */
 }
 .sidebar {
-  /* position: fixed; */
-  top: 0;
+  /* position: sticky; */
+  /* display: fixed; */
+  /* top: 56px; */
+  margin-top: 56px;
   z-index: 999;
   background: #ffffff;
-  padding-top: 50px;
+  /* padding-top: 50px; */
   color: #000000;
-  height: 100svh;
+  height: 92dvh;
   width: 200px;
   transition: all 0.5s;
 }
@@ -232,23 +233,26 @@ main {
   color: #000000;
   padding: 10px 15px;
   gap: 15px;
-  transition: all 0.1s;
+  transition: all 0.2s;
 }
 
 .link:hover {
   background: lightskyblue;
   border-radius: 0px 50px 50px 0px;
-  color: #000;
+  /* color: #000; */
   transition: all 0.2s;
 }
 .active {
   background: lightskyblue;
+  width: 100%;
+  /* transition: all 0.2s; */
   border-radius: 0px 50px 50px 0px;
-  color: #000;
+  color: white;
 }
 .icon,
 .link_text {
-  font-size: 20px;
+  font-size: 18px;
+  transition: all 0.2s ease-in-out;
 }
 
 /* header-bar */
@@ -307,8 +311,8 @@ main {
 }
 .main-container {
   /* overflow-y: hidden; */
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .dashboard_main {

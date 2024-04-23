@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as Components from "./components";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BASEURL } from "../constant";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     console.log(userDetails);
-    fetch("https://library-mtu.vercel.app/api/student", {
+    const id = toast.loading("Please wait...");
+    fetch(`${BASEURL}/api/student`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(userDetails),
@@ -35,7 +37,11 @@ function Login() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success === true) {
-          toast("Send Otp at email");
+          toast.update(id, {
+            render: "All is good",
+            type: "success",
+            isLoading: false,
+          });
           navigate("/otp");
         }
         console.log(data);
@@ -57,7 +63,7 @@ function Login() {
 
   useEffect(() => {
     const fetchBranch = async () => {
-      const res = await fetch("https://library-mtu.vercel.app/api/branch");
+      const res = await fetch(`${BASEURL}/api/branch`);
       const data = await res.json();
       setBranch(data.data);
     };
@@ -94,14 +100,13 @@ function Login() {
             />
             <Components.Select onChange={handleInput} name="branch">
               <option value="select">Select Branch</option>
-              {branch &&
-                branch.map((each) => {
-                  return (
-                    <option key={each._id} value={each._id}>
-                      {each.name}
-                    </option>
-                  );
-                })}
+              {branch?.map((each) => {
+                return (
+                  <option key={each._id} value={each._id}>
+                    {each.name}
+                  </option>
+                );
+              })}
             </Components.Select>
             <Components.Input
               onChange={handleInput}

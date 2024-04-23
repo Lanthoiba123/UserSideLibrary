@@ -14,22 +14,22 @@ const Sidebar = () => {
     {
       path: "/profile",
       name: "Profile",
-      icon: <FaUserAlt />,
+      icon: <FaUserAlt size={27} />,
     },
     {
       path: "/books",
       name: "Books",
-      icon: <BsBookFill />,
+      icon: <BsBookFill size={27} />,
     },
     {
       path: "/dashboard",
       name: "Dashboard",
-      icon: <FaTh />,
+      icon: <FaTh size={27} />,
     },
     {
       path: "/librarian",
       name: "Librarian",
-      icon: <HiMiniBuildingLibrary />,
+      icon: <HiMiniBuildingLibrary size={27} />,
     },
     // {
     //   path: "/login",
@@ -43,68 +43,72 @@ const Sidebar = () => {
     <>
       <div style={{ display: "flex" }}>
         <div
+          onClick={() => setIsOpen((prev) => !prev)}
+          onKeyDown={() => setIsOpen((prev) => !prev)}
+          className="p-2 flex flex-col gap-1 sm:hidden "
+        >
+          <div className="w-7 h-1 bg-gray-600 rounded" />
+          <div className="w-7 h-1 bg-gray-600 rounded" />
+          <div className="w-7 h-1 bg-gray-600 rounded" />
+        </div>
+        <div
           style={{
-            width: isOpen ? "180px" : "50px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            width: isOpen ? "160px" : "55px",
           }}
-          className="sidebar"
+          className={`sidebar  ${
+            isOpen ? "flex items-start " : "hidden sm:flex"
+          }  flex-col items-start `}
         >
           <div className="top_section">
             {/* <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
             Logo
           </h1> */}
-            <img
+            <div
+              style={{ marginLeft: isOpen ? "0px" : "0px" }}
+              className="bars "
+            >
+              <FaBars onClick={toggle} />
+            </div>
+            {/* <img
               style={{ display: isOpen ? "block" : "none" }}
               className="logo"
               src="mtuLogo.png"
               alt="MTU Logo"
-            />
-            <div
-              style={{ marginLeft: isOpen ? "40px" : "0px" }}
-              className="bars"
-            >
-              <FaBars onClick={toggle} />
-            </div>
+            /> */}
           </div>
 
-          <nav
-            style={{
-              display: "flex",
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              {menuItem.map((item, index) => (
-                <NavLink
-                  to={item.path}
-                  key={v4()}
-                  className="link"
-                  style={{
-                    alignSelf:
-                      item?.position === "bottom" ? "flex-end" : "flex-start",
-                  }}
-                  // activeclassName="active"
+          <nav className="flex flex-col transition ease-in gap-1 items-center text-[24px] flex-1">
+            {menuItem.map((item, index) => (
+              <NavLink
+                to={item.path}
+                key={v4()}
+                className={`link transition ease-in  w-full items-center ${
+                  !isOpen && "self-start"
+                }`}
+                // activeclassName="active"
+              >
+                <div className="icon">{item.icon}</div>
+                <div
+                  style={{ display: isOpen ? "block" : "none" }}
+                  className="link_text transition ease-in"
                 >
-                  <div className="icon">{item.icon}</div>
-                  <div
-                    style={{ display: isOpen ? "block" : "none" }}
-                    className="link_text"
-                  >
-                    {item.name}
-                  </div>
-                </NavLink>
-              ))}
-            </div>
+                  {item.name}
+                </div>
+              </NavLink>
+            ))}
 
-            <div className="flex justify-center text-2xl h-10">
-              <button type="button">
-                <IoLogOut />
-              </button>
-            </div>
+            <button
+              className="mt-auto mb-5 link self-start items-center w-full"
+              type="button"
+            >
+              <IoLogOut size={27} />
+              <div
+                style={{ display: isOpen ? "block" : "none" }}
+                className="link_text"
+              >
+                Logout
+              </div>
+            </button>
           </nav>
         </div>
         <ScrollArea className="h-[100svh] flex-1  ">

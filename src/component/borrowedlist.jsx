@@ -1,8 +1,21 @@
-import DataTable, { defaultThemes } from "react-data-table-component";
+import DataTable, {
+  defaultThemes,
+  createTheme,
+} from "react-data-table-component";
 import styled, { keyframes } from "styled-components";
 import "./borrowedlist.css";
+import { format } from "date-fns";
 import { data } from "./data";
 import { useState, useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const rotate360 = keyframes`
   from {
@@ -57,14 +70,14 @@ const Borrowedlist = () => {
       name: "Sl.No",
       selector: (row) => row.sl,
       sortable: true,
-      width: "80px",
+      width: "82px",
     },
     {
       name: "Name of Books",
       selector: (row) => row.books,
       sortable: true,
       wrap: true,
-      width: "200px",
+      width: "190px",
     },
     {
       name: "Name of Authors",
@@ -82,45 +95,84 @@ const Borrowedlist = () => {
     },
     {
       name: "Date of Taken",
-      selector: (row) => row.taken,
+      selector: (row) => format(new Date(row.taken), "dd/MM/yyyy"),
       sortable: true,
       wrap: true,
-      width: "132px",
+      width: "139px",
     },
     {
       name: "Date of Return",
-      selector: (row) => row.return,
+      selector: (row) => format(new Date(row.return), "dd/MM/yyyy"),
       sortable: true,
       wrap: true,
-      width: "138px",
+      width: "143px",
     },
     {
       name: "Date of Submit",
-      selector: (row) => row.submit,
+      selector: (row) => format(new Date(row.submit), "dd/MM/yyyy"),
       sortable: true,
       wrap: true,
-      width: "140px",
+      width: "145px",
     },
     {
+      cell: (row) => {
+        let backgroundColor;
+        if (row.remark === "Submitted") {
+          backgroundColor = "bg-green-600";
+        } else if (row.remark === "Unsubmitted") {
+          backgroundColor = "bg-red-600";
+        } else {
+          backgroundColor = "bg-[#1db4ff]";
+        }
+
+        return (
+          <div
+            className={`p-2 w-full ${backgroundColor} text-white rounded-lg`}
+          >
+            {row.remark}
+          </div>
+        );
+      },
       name: "Remark",
       selector: (row) => row.remark,
       sortable: true,
+      width: "125px",
     },
     {
-      cell: () => (
-        <button
-          type="submit"
-          className="bg-blue-500 p-1.5 rounded-lg text-white"
-        >
-          Renew
-        </button>
-      ),
+      cell: (row) =>
+        row.remark === "Submitted" || row.remark === "Due Fine" ? null : (
+          <button
+            type="submit"
+            className="bg-blue-500 p-1.5 rounded-lg w-full text-white"
+          >
+            Renew
+          </button>
+        ),
       name: "Request",
       selector: (row) => row.request,
       sortable: true,
+      width: "102px",
       // button: true,
     },
   ];
+  // pagination color change
+
+  createTheme("solarized", {
+    text: {
+      primary: "black",
+      secondary: "#2aa198",
+    },
+    background: {
+      default: "white",
+    },
+    context: {
+      background: "#cb4b16",
+      text: "#FFFFFF",
+    },
+    divider: {
+      default: "black",
+    },
+  });
 
   // table column margin
   const customStyles = {
@@ -131,18 +183,21 @@ const Borrowedlist = () => {
     },
     headRow: {
       style: {
+        backgroundColor: "blue",
+        color: "white",
+        fontWeight: "bold",
         borderTopStyle: "solid",
         borderTopWidth: "1px",
-        borderTopColor: defaultThemes.default.divider.default,
+        borderTopColor: "black",
       },
     },
     headCells: {
       style: {
-        "&:not(:last-of-type)": {
-          borderRightStyle: "solid",
-          borderRightWidth: "1px",
-          borderRightColor: defaultThemes.default.divider.default,
-        },
+        borderRightStyle: "solid",
+        borderRightWidth: "1px",
+        borderRightColor: "black",
+        display: "flex",
+        justifyContent: "center",
       },
     },
     cells: {
@@ -150,8 +205,11 @@ const Borrowedlist = () => {
         "&:not(:last-of-type)": {
           borderRightStyle: "solid",
           borderRightWidth: "1px",
-          borderRightColor: defaultThemes.default.divider.default,
+          borderRightColor: "black",
         },
+        display: "flex",
+        justifyContent: "center",
+        textAlign: "center",
       },
     },
   };
@@ -197,32 +255,56 @@ const Borrowedlist = () => {
     setRecords(newData);
   }
 
+  const handleFilterChange = (event) => {
+    console.log(event.target.value);
+    const searchDate = Date.parse(event.target.value);
+    const newData = data.filter((row) => {
+      const takenDate = new Date(row.taken);
+      return takenDate.getTime() === searchDate;
+    });
+    setRecords(newData);
+  };
   return (
     <>
-      <div className="bg-yellow-400 flex items-center">
-        {/* filter bar area */}
-        <div className="table-filter bg-white p-2 mx-6">
-          <input
-            className="border rounded-2xl border-gray-600"
-            type="text"
-            onChange={handleFilter}
-            placeholder="Search book name..."
-          />
-        </div>
-        <div className="bg-red-500">fdf</div>
+      <div className="bg-white flex flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
+        <input
+          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
+          type="text"
+          onChange={handleFilter}
+          placeholder="Search book name..."
+        />
+        <input
+          type="date"
+          // value={filterDate}
+          onChange={handleFilterChange}
+          className="border rounded-2xl border-gray-600 px-2"
+        />{" "}
+        <Select>
+          <SelectTrigger className="h-7 w-[180px] ml-40 border rounded-2xl border-gray-600 px-2">
+            <SelectValue placeholder="Borrowed Book List" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>List</SelectLabel>
+              <SelectItem value="borrowedlist">Borrowed Book List</SelectItem>
+              <SelectItem value="renewlist">Renew Book List</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
-      <div className="main-container">
+      <div className="lg:flex lg:justify-center md:flex md:justify-center ">
         <div
-          className="container mt-5 "
+          className=" mt-[120px] rounded-xl "
           style={{
-            width: "85vw",
+            width: "80vw",
             height: "80vh",
             flexDirection: "column",
-            justifyContent: "flex-start",
+            // justifyContent: "flex-start",
           }}
         >
           <DataTable
             customStyles={customStyles}
+            theme="solarized"
             conditionalRowStyles={conditionalRowStyles}
             columns={columns}
             data={records}

@@ -6,7 +6,7 @@ function Otp() {
   const [otp, setOtp] = useState(new Array(4).fill(""));
 
   function handleChange(e, index) {
-    if (isNaN(e.target.value)) return false;
+    if (Number.isNaN(e.target.value)) return false;
     setOtp([
       ...otp.map((data, indx) => (indx === index ? e.target.value : data)),
     ]);

@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import Forgot from "./forgot";
 import Login from "./login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -18,7 +18,7 @@ import Sidebar from "./component/sidebar";
 function App() {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer autoClose={4000} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
