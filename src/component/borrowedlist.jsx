@@ -292,14 +292,16 @@ const Borrowedlist = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="lg:flex lg:justify-center md:flex md:justify-center ">
+
+      <div className=" lg:flex lg:justify-center md:flex md:justify-center ">
         <div
           className=" mt-[120px] rounded-xl "
           style={{
             width: "80vw",
             height: "80vh",
+            display: "flex",
             flexDirection: "column",
-            // justifyContent: "flex-start",
+            justifyContent: "flex-start",
           }}
         >
           <DataTable

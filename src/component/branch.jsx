@@ -10,20 +10,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 const Branch = () => {
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [records, setRecords] = useState([]);
 
-  useEffect(() => {
-    setRecords(books);
-  }, []);
-
-  function handleFilter(event) {
-    console.log(event.target.value);
-    const newBookData = books.filter((book) => {
-      return book.Book.toLowerCase().includes(event.target.value.toLowerCase());
-    });
-    setRecords(newBookData);
-  }
+  // function handleFilter(event) {
+  //   console.log(event.target.value);
+  //   const newBookData = records.filter((book) => {
+  //     return book.title
+  //       .toLowerCase()
+  //       .includes(event.target.value.toLowerCase());
+  //   });
+  //   setRecords(newBookData);
+  // }
 
   const [branch, setBranch] = useState([]);
   // // const [email, setBranch] = useState("");
@@ -34,15 +35,40 @@ const Branch = () => {
       const data = await res.json();
       setBranch(data.data);
     };
+    const fetchBooks = async () => {
+      const res = await fetch(`${BASEURL}/api/book/get`);
+      const data = await res.json();
+      console.log(data);
+      setRecords(data.book);
+      setFilteredBooks(data.book);
+    };
     fetchBranch();
+    fetchBooks();
   }, []);
+
+  const handleInputChange = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+    if (searchTerm === "") {
+      setFilteredBooks(records);
+    } else {
+      const filtered = records.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredBooks(filtered);
+    }
+  };
+
   return (
     <>
       <div className="w-full  h-11 bg-white mt-[56px] fixed flex items-center">
         <input
           className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
           type="text"
-          onChange={handleFilter}
+          value={searchTerm}
+          onChange={handleInputChange}
           placeholder="Search book name..."
         />
         <Select>
@@ -54,6 +80,7 @@ const Branch = () => {
               <SelectLabel>List</SelectLabel>
               {branch.map((item) => (
                 <SelectItem
+                  key={item._id}
                   onClick={() => filterRecords(item._id)}
                   value={item._id}
                 >
@@ -65,22 +92,27 @@ const Branch = () => {
         </Select>
       </div>
       <div className=" mt-[6em] grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-y-[16px] gap-8 px-[40px] py-6 ">
-        {records.map((book) => {
+        {filteredBooks.map((book) => {
           return (
             <div
-              key={book.id}
+              key={book._id}
               className="w-[12em] h-[26em] flex flex-col  gap-y-1 rounded-md overflow-hidden"
             >
-              <img
+              {/* <img
                 className="w-full h-[18em] object-cover rounded-md"
                 src={book.url}
                 alt=""
+              /> */}
+              <img
+                className="w-full h-[18em] object-cover rounded-md"
+                src={`https://drive.google.com/thumbnail?id=${book.image_url}`}
+                alt="None"
               />
               <div className="bg-white px-3 py-1 text-sm rounded-md font-sans">
-                <p>Name:{book.Book}</p>
-                <p>Writer: {book.Writer}</p>
-                <p>No. of Books: {book.No_of_Books}</p>
-                <p>Available Books: {book.Available_Books}</p>
+                <p>Name:{book.title}</p>
+                <p>Writer: {book.author}</p>
+                <p>No. of Books: {book.copiesOwned}</p>
+                <p>Available Books: {book.copiesAvailable}</p>
               </div>
             </div>
           );

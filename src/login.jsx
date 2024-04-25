@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import * as Components from "./components";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BASEURL } from "../constant";
+import { FaUser, FaLock } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { BiHealth } from "react-icons/bi";
+import "./login.css";
 
 function Login() {
   const navigate = useNavigate();
-  const [signIn, toggle] = useState(true);
 
   const [userDetails, setUserDetatils] = useState({
     fullName: "",
@@ -73,118 +75,84 @@ function Login() {
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   // };
-
+  const [signInMode, setSignInMode] = useState(true);
   return (
-    <div className="register">
-      <Components.Container>
-        <Components.SignUpContainer signinin={signIn}>
-          <Components.Form onSubmit={handleSubmit}>
-            <Components.Title>REGISTER</Components.Title>
-            <Components.Register>
-              Let’s Go To Our Books World
-            </Components.Register>
-            <Components.Input
-              name="fullName"
-              required
-              onChange={handleInput}
-              type="text"
-              placeholder="Username"
-            />
-            <Components.Input
-              onChange={handleInput}
-              required
-              name="registrationNo"
-              maxLength={10}
-              type="text"
-              placeholder="Registration number"
-            />
-            <Components.Select onChange={handleInput} name="branch">
-              <option value="select">Select Branch</option>
-              {branch?.map((each) => {
-                return (
-                  <option key={each._id} value={each._id}>
-                    {each.name}
-                  </option>
-                );
-              })}
-            </Components.Select>
-            <Components.Input
-              onChange={handleInput}
-              name="email"
-              required
-              pattern=".+@mtu\.ac\.in$"
-              type="email"
-              placeholder="Enter Your MTU email"
-            />
-            <Components.Input
-              onChange={handleInput}
-              required
-              name="password"
-              maxLength={8}
-              type="password"
-              placeholder="Password"
-            />
-            <Components.Button>Register Now</Components.Button>
-          </Components.Form>
-        </Components.SignUpContainer>
+    <div className={`container ${signInMode ? "sign-up-mode" : ""}`}>
+      <div className="forms-container">
+        <div className="signin-signup">
+          <form action="#" className="sign-in-form">
+            <h2 className="title">Sign in</h2>
+            <div className="input-field">
+              <FaUser />
+              <input type="text" placeholder="Username" />
+            </div>
+            <div className="input-field">
+              <FaLock />
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" value="Login" className="btn solid" />
+          </form>
+          <form action="#" className="sign-up-form">
+            <h2 className="title">Sign up</h2>
+            <div className="input-field">
+              <FaUser />
+              <input type="text" placeholder="Username" />
+            </div>
+            <div className="input-field">
+              <BiHealth />
+              <input type="text" placeholder="Registration No." />
+            </div>
+            <div className="input-field">
+              <MdEmail />
+              <input type="email" placeholder="Email" />
+            </div>
+            <div className="input-field">
+              <FaLock />
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" className="btn" value="Sign up" />
+          </form>
+        </div>
+      </div>
 
-        <Components.SignInContainer signinin={signIn}>
-          <Components.Form>
-            <Components.Title>LOGIN NOW</Components.Title>
-            <Components.Register>
-              Let’s Go To Our Books World
-            </Components.Register>
-            <Components.Input
-              required
-              maxLength={10}
-              type="text"
-              placeholder="Registration number"
-            />
-            <Components.Input
-              required
-              maxLength={8}
-              type="password"
-              placeholder="Password"
-            />
-            <Components.Anchor href="forgotPassword">
-              Forgot your password?
-            </Components.Anchor>
-            <Components.Button>Login Now</Components.Button>
-          </Components.Form>
-        </Components.SignInContainer>
-
-        <Components.OverlayContainer signinin={signIn}>
-          <Components.Overlay signinin={signIn}>
-            <Components.LeftOverlayPanel signinin={signIn}>
-              {/* <Components.Title>Welcome Back!</Components.Title> */}
-              <Components.Box>
-                <Components.Paragraph>
-                  Hurry up, Login page is waiting for you to take you to the
-                  world of books , Register Now!!!
-                </Components.Paragraph>
-                <Components.Image src="women.png" />
-              </Components.Box>
-              <Components.GhostButton onClick={() => toggle(true)}>
-                Login Now
-              </Components.GhostButton>
-            </Components.LeftOverlayPanel>
-
-            <Components.RightOverlayPanel signinin={signIn}>
-              {/* <Components.Title>Hello, Friend!</Components.Title> */}
-              <Components.Box2>
-                <Components.Paragraph2>
-                  You will be excited after seeing the books world and you are
-                  waiting for Login, Login Now!!!
-                </Components.Paragraph2>
-                <Components.Image2 src="women2.png" />
-              </Components.Box2>
-              <Components.GhostButton onClick={() => toggle(false)}>
-                Register Now
-              </Components.GhostButton>
-            </Components.RightOverlayPanel>
-          </Components.Overlay>
-        </Components.OverlayContainer>
-      </Components.Container>
+      <div className="panels-container">
+        <div className="panel left-panel">
+          <div className="content">
+            <h3>New here ?</h3>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+              ex ratione. Aliquid!
+            </p>
+            <button
+              className="btn transparent"
+              type="button"
+              onClick={() => setSignInMode(true)}
+              id="sign-up-btn"
+            >
+              Sign up
+            </button>
+          </div>
+          <img src="/log.svg" className="image" alt="" />
+        </div>
+        <div className="panel right-panel">
+          <div className="content">
+            <h3>One of us ?</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+              laboriosam ad deleniti.
+            </p>
+            <button
+              onClick={() => setSignInMode(false)}
+              type="button"
+              className="btn transparent"
+              id="sign-in-btn"
+            >
+              Sign in
+            </button>
+          </div>
+          <img src="/register.svg" className="image" alt="" />
+        </div>
+      </div>
     </div>
   );
 }
