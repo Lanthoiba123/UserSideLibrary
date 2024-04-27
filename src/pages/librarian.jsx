@@ -1,9 +1,9 @@
 import Headerbar from "@/component/headerbar";
 import "./librarian.css";
-const Librarian = () => {
+const Librarian = ({ setIsOpen, isOpen }) => {
   return (
     <>
-      <Headerbar />
+      <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
       <div className="container1">
         <div className="card">
           <div className="imgbox">
@@ -13,7 +13,7 @@ const Librarian = () => {
             />
           </div>
           <div className="content">
-            <h2 className="h2">Tajmahal</h2>
+            <h2 className="h2">Bon Bon </h2>
             <p>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore,
               dicta?

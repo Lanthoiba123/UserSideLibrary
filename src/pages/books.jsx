@@ -1,10 +1,10 @@
 import Branch from "../component/branch";
 import Headerbar from "../component/headerbar";
 
-const Books = () => {
+const Books = ({ setIsOpen, isOpen }) => {
   return (
     <>
-      <Headerbar />
+      <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
       <Branch />
     </>
   );

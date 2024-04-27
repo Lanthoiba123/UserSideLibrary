@@ -84,33 +84,80 @@ function Login() {
             <h2 className="title">Sign in</h2>
             <div className="input-field">
               <FaUser />
-              <input type="text" placeholder="Username" />
+              <input
+                type="text"
+                name="email"
+                onChange={handleInput}
+                placeholder="Username"
+              />
             </div>
             <div className="input-field">
               <FaLock />
-              <input type="password" placeholder="Password" />
+              <input
+                type="password"
+                name="password"
+                onChange={handleInput}
+                placeholder="Password"
+              />
             </div>
             <input type="submit" value="Login" className="btn solid" />
           </form>
-          <form action="#" className="sign-up-form">
+          <form onSubmit={handleSubmit} className="sign-up-form">
             <h2 className="title">Sign up</h2>
             <div className="input-field">
               <FaUser />
-              <input type="text" placeholder="Username" />
+              <input
+                type="text"
+                name="fullName"
+                onChange={handleInput}
+                placeholder="Username"
+              />
             </div>
             <div className="input-field">
               <BiHealth />
-              <input type="text" placeholder="Registration No." />
+              <input
+                type="text"
+                name="registrationNo"
+                onChange={handleInput}
+                placeholder="Registration No."
+              />
             </div>
+            <select
+              className="input-field"
+              name="branch"
+              onChange={handleInput}
+              id=""
+            >
+              <option value="" className="text-slate-100">
+                Select Branch
+              </option>
+              {branch.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
             <div className="input-field">
               <MdEmail />
-              <input type="email" placeholder="Email" />
+              <input
+                type="email"
+                name="email"
+                onChange={handleInput}
+                placeholder="Email"
+              />
             </div>
             <div className="input-field">
               <FaLock />
-              <input type="password" placeholder="Password" />
+              <input
+                type="password"
+                name="password"
+                onChange={handleInput}
+                placeholder="Password"
+              />
             </div>
-            <input type="submit" className="btn" value="Sign up" />
+            <button type="submit" onClick={handleSubmit} className="btn">
+              Sign Up
+            </button>
           </form>
         </div>
       </div>

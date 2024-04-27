@@ -31,6 +31,7 @@ function Otp() {
     const stringOtp = otp.join("");
     console.log(stringOtp);
     const objectOtp = {
+      email: "lanthoiba_k20@mtu.ac.in",
       otp: stringOtp,
     };
     fetch("https://library-mtu.vercel.app/api/student/verify", {
@@ -73,6 +74,7 @@ function Otp() {
           {otp.map((data, i) => {
             return (
               <input
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={i}
                 type="text"
                 value={data}

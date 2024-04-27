@@ -1,11 +1,11 @@
 import { useState } from "react";
-function Headerbar() {
-  const [isOpen, setIsOpen] = useState(false);
+function Headerbar({ toggle, setIsOpen, isOpen }) {
   return (
     <div className="flex bg-blue-500 p-2  rounded z-10 fixed w-screen top-0 left-0">
       <div
-        onClick={() => setIsOpen((prev) => !prev)}
-        onKeyDown={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
         className="p-2 flex flex-col gap-1 "
       >
         <div className="w-7 h-1 bg-gray-600 rounded" />

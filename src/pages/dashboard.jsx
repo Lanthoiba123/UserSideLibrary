@@ -1,11 +1,11 @@
 import Borrowedlist from "../component/borrowedlist";
 import Headerbar from "../component/headerbar";
 
-const Dashboard = () => {
+const Dashboard = ({ setIsOpen, isOpen }) => {
   return (
     <>
       <div>
-        <Headerbar />
+        <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
         <Borrowedlist />
       </div>
     </>

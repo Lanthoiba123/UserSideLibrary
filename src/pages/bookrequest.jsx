@@ -1,10 +1,10 @@
 import DataTable, { createTheme } from "react-data-table-component";
 import styled, { keyframes } from "styled-components";
-import "./borrowedlist.css";
+// import "./borrowedlist.css";
+import Headerbar from "@/component/headerbar";
 import { format } from "date-fns";
-import { data } from "./data";
+import { data } from "../component/data";
 import { useState, useEffect } from "react";
-import { BASEURL } from "../../constant";
 import {
   Select,
   SelectContent,
@@ -53,19 +53,14 @@ const CustomLoader = () => (
     </div>
   </div>
 );
-const Borrowedlist = () => {
+const Bookrequest = ({ setIsOpen, isOpen }) => {
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
-    const fetchBorrowedBook = async () => {
-      const res = await fetch(`${BASEURL}/api/student/profile`);
-      const data = await res.json();
-      setBorrowedBook(data.data);
-    };
-    // const timeout = setTimeout(() => {
-    //   setPending(false);
-    // }, 0);
-    // return () => clearTimeout(timeout);
+    const timeout = setTimeout(() => {
+      setPending(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
   }, []);
 
   const columns = [
@@ -80,43 +75,24 @@ const Borrowedlist = () => {
       selector: (row) => row.books,
       sortable: true,
       wrap: true,
-      width: "190px",
+      width: "300px",
     },
     {
       name: "Name of Authors",
       selector: (row) => row.authors,
       sortable: true,
       wrap: true,
-      width: "160px",
+      width: "300px",
     },
+
     {
-      name: "Book Id",
-      selector: (row) => row.id,
-      sortable: true,
-      wrap: true,
-      width: "110px",
-    },
-    {
-      name: "Date of Taken",
+      name: "Date of Request",
       selector: (row) => format(new Date(row.taken), "dd/MM/yyyy"),
       sortable: true,
       wrap: true,
-      width: "139px",
+      width: "150px",
     },
-    {
-      name: "Date of Return",
-      selector: (row) => format(new Date(row.return), "dd/MM/yyyy"),
-      sortable: true,
-      wrap: true,
-      width: "143px",
-    },
-    {
-      name: "Date of Submit",
-      selector: (row) => format(new Date(row.submit), "dd/MM/yyyy"),
-      sortable: true,
-      wrap: true,
-      width: "145px",
-    },
+
     {
       cell: (row) => {
         let backgroundColor;
@@ -140,22 +116,6 @@ const Borrowedlist = () => {
       selector: (row) => row.remark,
       sortable: true,
       width: "125px",
-    },
-    {
-      cell: (row) =>
-        row.remark === "Submitted" || row.remark === "Due Fine" ? null : (
-          <button
-            type="submit"
-            className="bg-blue-500 p-1.5 rounded-lg w-full text-white"
-          >
-            Renew
-          </button>
-        ),
-      name: "Request",
-      selector: (row) => row.request,
-      sortable: true,
-      width: "102px",
-      // button: true,
     },
   ];
   // pagination color change
@@ -269,6 +229,7 @@ const Borrowedlist = () => {
   };
   return (
     <>
+      <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
       <div className="bg-white flex flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
         <input
           className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
@@ -300,7 +261,7 @@ const Borrowedlist = () => {
         <div
           className=" mt-[120px] rounded-xl "
           style={{
-            width: "80vw",
+            width: "65vw",
             height: "80vh",
             display: "flex",
             flexDirection: "column",
@@ -324,4 +285,4 @@ const Borrowedlist = () => {
   );
 };
 
-export default Borrowedlist;
+export default Bookrequest;

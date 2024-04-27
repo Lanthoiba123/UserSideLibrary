@@ -5,11 +5,12 @@ import { HiMiniBuildingLibrary } from "react-icons/hi2";
 import { IoLogOut } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FaCodePullRequest } from "react-icons/fa6";
 import { v4 } from "uuid";
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+const Sidebar = ({ isOpen }) => {
+  // const [isOpen, setIsOpen] = useState(false);
+  // const toggle = () => setIsOpen(!isOpen);
   const menuItem = [
     {
       path: "/profile",
@@ -31,6 +32,11 @@ const Sidebar = () => {
       name: "Librarian",
       icon: <HiMiniBuildingLibrary size={27} />,
     },
+    {
+      path: "/bookrequest",
+      name: "Requisition",
+      icon: <FaCodePullRequest size={27} />,
+    },
     // {
     //   path: "/login",
     //   name: "Logout",
@@ -42,7 +48,7 @@ const Sidebar = () => {
     // <div className="container">
     <>
       <div style={{ display: "flex" }}>
-        <div
+        {/* <div
           onClick={() => setIsOpen((prev) => !prev)}
           onKeyDown={() => setIsOpen((prev) => !prev)}
           className="p-2 flex flex-col gap-1 sm:hidden "
@@ -50,7 +56,7 @@ const Sidebar = () => {
           <div className="w-7 h-1 bg-gray-600 rounded" />
           <div className="w-7 h-1 bg-gray-600 rounded" />
           <div className="w-7 h-1 bg-gray-600 rounded" />
-        </div>
+        </div> */}
         <div
           style={{
             width: isOpen ? "160px" : "55px",
@@ -63,12 +69,12 @@ const Sidebar = () => {
             {/* <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
             Logo
           </h1> */}
-            <div
+            {/* <div
               style={{ marginLeft: isOpen ? "0px" : "0px" }}
               className="bars "
             >
-              <FaBars onClick={toggle} />
-            </div>
+              <FaBars />
+            </div> */}
             {/* <img
               style={{ display: isOpen ? "block" : "none" }}
               className="logo"
