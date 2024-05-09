@@ -62,10 +62,10 @@ const Borrowedlist = () => {
       const data = await res.json();
       setBorrowedBook(data.data);
     };
-    // const timeout = setTimeout(() => {
-    //   setPending(false);
-    // }, 0);
-    // return () => clearTimeout(timeout);
+    const timeout = setTimeout(() => {
+      setPending(false);
+    }, 800);
+    return () => clearTimeout(timeout);
   }, []);
 
   const columns = [

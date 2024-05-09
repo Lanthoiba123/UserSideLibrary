@@ -28,35 +28,19 @@ const Sidebar = ({ isOpen }) => {
       icon: <FaTh size={27} />,
     },
     {
-      path: "/librarian",
-      name: "Librarian",
-      icon: <HiMiniBuildingLibrary size={27} />,
-    },
-    {
       path: "/bookrequest",
       name: "Requisition",
       icon: <FaCodePullRequest size={27} />,
     },
-    // {
-    //   path: "/login",
-    //   name: "Logout",
-    //   icon: <IoLogOut />,
-    //   position: 'bottom'
-    // },
+    {
+      path: "/librarian",
+      name: "Librarian",
+      icon: <HiMiniBuildingLibrary size={27} />,
+    },
   ];
   return (
-    // <div className="container">
     <>
       <div style={{ display: "flex" }}>
-        {/* <div
-          onClick={() => setIsOpen((prev) => !prev)}
-          onKeyDown={() => setIsOpen((prev) => !prev)}
-          className="p-2 flex flex-col gap-1 sm:hidden "
-        >
-          <div className="w-7 h-1 bg-gray-600 rounded" />
-          <div className="w-7 h-1 bg-gray-600 rounded" />
-          <div className="w-7 h-1 bg-gray-600 rounded" />
-        </div> */}
         <div
           style={{
             width: isOpen ? "160px" : "55px",

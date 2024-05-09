@@ -1,19 +1,10 @@
 import DataTable, { createTheme } from "react-data-table-component";
 import styled, { keyframes } from "styled-components";
-// import "./borrowedlist.css";
+
 import Headerbar from "@/component/headerbar";
 import { format } from "date-fns";
-import { data } from "../component/data";
+import { data_one } from "@/component/bookrequestdata";
 import { useState, useEffect } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const rotate360 = keyframes`
   from {
@@ -59,7 +50,7 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setPending(false);
-    }, 2000);
+    }, 800);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -87,7 +78,7 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
 
     {
       name: "Date of Request",
-      selector: (row) => format(new Date(row.taken), "dd/MM/yyyy"),
+      selector: (row) => format(new Date(row.request), "dd/MM/yyyy"),
       sortable: true,
       wrap: true,
       width: "150px",
@@ -96,12 +87,10 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
     {
       cell: (row) => {
         let backgroundColor;
-        if (row.remark === "Submitted") {
-          backgroundColor = "bg-green-600";
-        } else if (row.remark === "Unsubmitted") {
-          backgroundColor = "bg-red-600";
-        } else {
+        if (row.remark === "Request") {
           backgroundColor = "bg-[#1db4ff]";
+        } else {
+          backgroundColor = "bg-green-600";
         }
 
         return (
@@ -209,10 +198,10 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
       },
     },
   ];
-  const [records, setRecords] = useState(data);
+  const [records, setRecords] = useState(data_one);
   function handleFilter(event) {
     console.log(event.target.value);
-    const newData = data.filter((row) => {
+    const newData = data_one.filter((row) => {
       return row.books.toLowerCase().includes(event.target.value.toLowerCase());
     });
     setRecords(newData);
@@ -221,8 +210,8 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
   const handleFilterChange = (event) => {
     console.log(event.target.value);
     const searchDate = Date.parse(event.target.value);
-    const newData = data.filter((row) => {
-      const takenDate = new Date(row.taken);
+    const newData = data_one.filter((row) => {
+      const takenDate = new Date(row.request);
       return takenDate.getTime() === searchDate;
     });
     setRecords(newData);
@@ -242,19 +231,10 @@ const Bookrequest = ({ setIsOpen, isOpen }) => {
           // value={filterDate}
           onChange={handleFilterChange}
           className="border rounded-2xl border-gray-600 px-2"
-        />{" "}
-        <Select>
-          <SelectTrigger className="h-7 w-[180px] ml-40 border rounded-2xl border-gray-600 px-2">
-            <SelectValue placeholder="Borrowed Book List" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>List</SelectLabel>
-              <SelectItem value="borrowedlist">Borrowed Book List</SelectItem>
-              <SelectItem value="renewlist">Renew Book List</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        />
+        <div className="bg-gray-200 p-1 border rounded-2xl border-gray-600 px-2 ml-10 cursor-pointer">
+          New Book Request
+        </div>
       </div>
 
       <div className=" lg:flex lg:justify-center md:flex md:justify-center ">
