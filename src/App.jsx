@@ -17,43 +17,54 @@ import Librarian from "./pages/librarian";
 import Sidebar from "./component/sidebar";
 import Bookrequest from "./pages/bookrequest";
 
+import "@mantine/core/styles.css";
+import { MantineProvider } from "@mantine/core";
+
 function App() {
   const [isOpen, setIsOpen] = useState(false);
+  const isloggedIn = window.localStorage.getItem("isLoggedIn");
+  
   return (
-    <div>
+    <MantineProvider>
       <ToastContainer autoClose={4000} />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgotPassword" element={<Forgot />} />
-          <Route path="/otp" element={<Otp />} />
-          <Route element={<Sidebar isOpen={isOpen} />}>
-            <Route
-              path="/books"
-              element={<Books setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-            <Route
-              path="/profile"
-              element={<Profile setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-            <Route
-              path="/dashboard"
-              element={<Dashboard setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-            <Route
-              path="/librarian"
-              element={<Librarian setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-            <Route
-              path="/bookrequest"
-              element={<Bookrequest setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-          </Route>
+          {isloggedIn ? (
+            <Route element={<Sidebar setIsOpen={setIsOpen} isOpen={isOpen} />}>
+              <Route
+                path="/"
+                element={<Books setIsOpen={setIsOpen} isOpen={isOpen} />}
+              />
+              <Route
+                path="/profile"
+                element={<Profile setIsOpen={setIsOpen} isOpen={isOpen} />}
+              />
+              <Route
+                path="/dashboard"
+                element={<Dashboard setIsOpen={setIsOpen} isOpen={isOpen} />}
+              />
+              <Route
+                path="/librarian"
+                element={<Librarian setIsOpen={setIsOpen} isOpen={isOpen} />}
+              />
+              <Route
+                path="/bookrequest"
+                element={<Bookrequest setIsOpen={setIsOpen} isOpen={isOpen} />}
+              />
+            </Route>
+          ) : (
+            <>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgotPassword" element={<Forgot />} />
+              <Route path="/otp" element={<Otp />} />
+            </>
+          )}
+
           {/* <Route path="/headerbar" element={<Headerbar />} /> */}
         </Routes>
       </BrowserRouter>
-    </div>
+    </MantineProvider>
   );
 }
 

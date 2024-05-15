@@ -17,6 +17,16 @@ function Login() {
     email: "",
     password: "",
   });
+  const [loginDetails, setLoginDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleLoginDetails = (e) => {
+    setLoginDetails((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  };
 
   function handleInput(event) {
     setUserDetatils((prevState) => {
@@ -44,6 +54,7 @@ function Login() {
             type: "success",
             isLoading: false,
           });
+
           navigate("/otp");
         }
         console.log(data);
@@ -59,6 +70,36 @@ function Login() {
         console.log(err);
       });
   }
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    console.log(loginDetails);
+    const id = toast.loading("Please wait...");
+    fetch(`${BASEURL}/api/student/login`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(loginDetails),
+      headers: {
+        "content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.update(id, {
+            render: "All is good",
+            type: "success",
+            isLoading: false,
+          });
+          window.localStorage.setItem("isLoggedIn", true);
+
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const [branch, setBranch] = useState([]);
   // // const [email, setBranch] = useState("");
@@ -87,8 +128,8 @@ function Login() {
               <input
                 type="text"
                 name="email"
-                onChange={handleInput}
-                placeholder="Username"
+                onChange={handleLoginDetails}
+                placeholder="email"
               />
             </div>
             <div className="input-field">
@@ -96,11 +137,13 @@ function Login() {
               <input
                 type="password"
                 name="password"
-                onChange={handleInput}
+                onChange={handleLoginDetails}
                 placeholder="Password"
               />
             </div>
-            <input type="submit" value="Login" className="btn solid" />
+            <button type="submit" onClick={loginSubmit} className="btn solid">
+              Login
+            </button>
           </form>
           <form onSubmit={handleSubmit} className="sign-up-form">
             <h2 className="title">Sign up</h2>
@@ -123,12 +166,12 @@ function Login() {
               />
             </div>
             <select
-              className="input-field"
+              className="input-field w-4/5"
               name="branch"
               onChange={handleInput}
               id=""
             >
-              <option value="" className="text-slate-100">
+              <option value="" className="text-slate-100 text-left w-3/4">
                 Select Branch
               </option>
               {branch.map((item) => (

@@ -7,18 +7,14 @@ import { NavLink, Outlet } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { v4 } from "uuid";
+import Headerbar from "./headerbar";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ setIsOpen, isOpen }) => {
   // const [isOpen, setIsOpen] = useState(false);
   // const toggle = () => setIsOpen(!isOpen);
   const menuItem = [
     {
-      path: "/profile",
-      name: "Profile",
-      icon: <FaUserAlt size={27} />,
-    },
-    {
-      path: "/books",
+      path: "/",
       name: "Books",
       icon: <BsBookFill size={27} />,
     },
@@ -37,53 +33,36 @@ const Sidebar = ({ isOpen }) => {
       name: "Librarian",
       icon: <HiMiniBuildingLibrary size={27} />,
     },
+    {
+      path: "/profile",
+      name: "Profile",
+      icon: <FaUserAlt size={27} />,
+    },
   ];
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div className="flex">
         <div
-          style={{
-            width: isOpen ? "160px" : "55px",
-          }}
-          className={`sidebar  ${
-            isOpen ? "flex items-start " : "hidden sm:flex"
+          // style={{
+          //   width: isOpen ? "160px" : "55px",
+          // }}
+          className={`sidebar overflow-hidden  ${
+            isOpen ? "w-[160px] flex items-start " : "w-[55px] hidden sm:flex"
           }  flex-col items-start `}
         >
-          <div className="top_section">
-            {/* <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-            Logo
-          </h1> */}
-            {/* <div
-              style={{ marginLeft: isOpen ? "0px" : "0px" }}
-              className="bars "
-            >
-              <FaBars />
-            </div> */}
-            {/* <img
-              style={{ display: isOpen ? "block" : "none" }}
-              className="logo"
-              src="mtuLogo.png"
-              alt="MTU Logo"
-            /> */}
-          </div>
-
-          <nav className="flex flex-col transition ease-in gap-1 items-center text-[24px] flex-1">
+          <nav className="flex flex-col gap-1 items-center text-[24px] flex-1">
             {menuItem.map((item, index) => (
               <NavLink
                 to={item.path}
                 key={v4()}
-                className={`link transition ease-in  w-full items-center ${
+                className={`link w-full items-center ${
                   !isOpen && "self-start"
                 }`}
+
                 // activeclassName="active"
               >
                 <div className="icon">{item.icon}</div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text transition ease-in"
-                >
-                  {item.name}
-                </div>
+                <div className="link_text">{item.name}</div>
               </NavLink>
             ))}
 
@@ -92,16 +71,12 @@ const Sidebar = ({ isOpen }) => {
               type="button"
             >
               <IoLogOut size={27} />
-              <div
-                style={{ display: isOpen ? "block" : "none" }}
-                className="link_text"
-              >
-                Logout
-              </div>
+              <div className="link_text">Logout</div>
             </button>
           </nav>
         </div>
         <ScrollArea className="h-[100svh] flex-1  ">
+          <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
           <Outlet />
         </ScrollArea>
       </div>

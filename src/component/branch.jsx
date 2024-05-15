@@ -27,7 +27,6 @@ const Branch = () => {
   // }
 
   const [branch, setBranch] = useState([]);
-  // // const [email, setBranch] = useState("");
 
   useEffect(() => {
     const fetchBranch = async () => {
@@ -61,6 +60,15 @@ const Branch = () => {
     }
   };
 
+  const handleBranchInput = (value) => {
+    if (value === "all_branch") {
+      setFilteredBooks(records);
+      return;
+    }
+    const filtered = records.filter((item) => item.branch._id === value);
+    setFilteredBooks(filtered);
+  };
+
   return (
     <>
       <div className="w-full  h-11 bg-white mt-[56px] fixed flex items-center">
@@ -71,13 +79,14 @@ const Branch = () => {
           onChange={handleInputChange}
           placeholder="Search book name..."
         />
-        <Select>
+        <Select onValueChange={handleBranchInput}>
           <SelectTrigger className="h-7 w-[300px] ml-40 border rounded-2xl border-gray-600 px-2">
             <SelectValue placeholder="All Branch Books" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>List</SelectLabel>
+              {/* <SelectLabel>Branch Books</SelectLabel> */}
+              <SelectItem value="all_branch">All Branch Books</SelectItem>
               {branch.map((item) => (
                 <SelectItem
                   key={item._id}
@@ -91,32 +100,25 @@ const Branch = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className=" mt-[6em] grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-y-[16px] gap-8 px-[40px] py-6 ">
-        {filteredBooks.map((book) => {
-          return (
-            <div
-              key={book._id}
-              className="w-[12em] h-[26em] flex flex-col  gap-y-1 rounded-md overflow-hidden"
-            >
-              {/* <img
-                className="w-full h-[18em] object-cover rounded-md"
-                src={book.url}
-                alt=""
-              /> */}
-              <img
-                className="w-full h-[18em] object-cover rounded-md"
-                src={`https://drive.google.com/thumbnail?id=${book.image_url}`}
-                alt="None"
-              />
-              <div className="bg-white px-3 py-1 text-sm rounded-md font-sans">
-                <p>Name:{book.title}</p>
-                <p>Writer: {book.author}</p>
-                <p>No. of Books: {book.copiesOwned}</p>
-                <p>Available Books: {book.copiesAvailable}</p>
-              </div>
+      <div className=" mt-[6em] grid items-stretch xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-y-[16px] gap-8 px-[40px] py-6 ">
+        {filteredBooks.map((book) => (
+          <div
+            key={book._id}
+            className="w-[12em]  flex flex-col  gap-y-1 rounded-md overflow-hidden"
+          >
+            <img
+              className="w-full h-[18em] object-cover rounded-md"
+              src={`https://drive.google.com/thumbnail?id=${book.image_url}`}
+              alt="None"
+            />
+            <div className="bg-white px-3 py-1 h-full flex flex-col justify-center items-start text-sm rounded-md font-sans">
+              <p>Name:{book.title}</p>
+              <p>Writer: {book.author}</p>
+              <p>No. of Books: {book.copiesOwned}</p>
+              <p>Available Books: {book.copiesAvailable}</p>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </>
   );

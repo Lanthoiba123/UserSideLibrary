@@ -3,7 +3,6 @@ import "./librarian.css";
 const Librarian = ({ setIsOpen, isOpen }) => {
   return (
     <>
-      <Headerbar setIsOpen={setIsOpen} isOpen={isOpen} />
       <div className="container1">
         <div className="card">
           <div className="imgbox">
