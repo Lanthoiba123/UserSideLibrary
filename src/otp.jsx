@@ -48,6 +48,7 @@ function Otp() {
         if (data.success) {
           window.localStorage.setItem("isLoggedIn", true);
           navigate("/");
+
           // toast("Otp Verified");
         }
       });

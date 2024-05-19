@@ -2,10 +2,9 @@ import DataTable, { createTheme } from "react-data-table-component";
 import styled, { keyframes } from "styled-components";
 import "./borrowedlist.css";
 import { format } from "date-fns";
-import { data } from "./data";
 import { useState, useEffect } from "react";
 import { BASEURL } from "../../constant";
-import { useNavigate } from "react-router-dom";
+
 import {
   Select,
   SelectContent,
@@ -54,8 +53,8 @@ const CustomLoader = () => (
     </div>
   </div>
 );
-const Borrowedlist = ({ isOpen, setIsOpen }) => {
-  const [records, setRecords] = useState(data);
+
+const Borrowedlist = ({ isOpen }) => {
   const [pending, setPending] = useState(true);
   const [renewColumnShow, setRenewColumn] = useState(true);
   const [borrowedBook, setBorrowedBook] = useState([]);
@@ -82,7 +81,6 @@ const Borrowedlist = ({ isOpen, setIsOpen }) => {
       setBorrowedBook((prev) => [...prev, book.loan_id]);
       setFilter((prev) => [...prev, book.loan_id]);
     });
-    console.log(borrowedBook);
     setPending(false);
   };
 
@@ -171,6 +169,9 @@ const Borrowedlist = ({ isOpen, setIsOpen }) => {
       width: "145px",
     },
     {
+      selector: (row) => row.remark,
+      sortable: true,
+      width: "125px",
       cell: (row) => {
         let backgroundColor;
         if (row.remark === "Submitted") {
@@ -190,9 +191,6 @@ const Borrowedlist = ({ isOpen, setIsOpen }) => {
         );
       },
       name: "Remark",
-      selector: (row) => row.remark,
-      sortable: true,
-      width: "125px",
     },
     {
       cell: (row) =>
@@ -272,9 +270,9 @@ const Borrowedlist = ({ isOpen, setIsOpen }) => {
     {
       cell: (row) => {
         let backgroundColor;
-        if (row.remark === "Submitted") {
+        if (row.remark === "accept") {
           backgroundColor = "bg-green-600";
-        } else if (row.remark === "Unsubmitted") {
+        } else if (row.remark === "reject") {
           backgroundColor = "bg-red-600";
         } else {
           backgroundColor = "bg-[#1db4ff]";

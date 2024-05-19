@@ -3,15 +3,17 @@ import { FaTh, FaBars, FaUserAlt } from "react-icons/fa";
 import { BsBookFill } from "react-icons/bs";
 import { HiMiniBuildingLibrary } from "react-icons/hi2";
 import { IoLogOut } from "react-icons/io5";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { v4 } from "uuid";
 import Headerbar from "./headerbar";
+import { BASEURL } from "../../constant.js";
 
 const Sidebar = ({ setIsOpen, isOpen }) => {
   // const [isOpen, setIsOpen] = useState(false);
   // const toggle = () => setIsOpen(!isOpen);
+  const navigate = useNavigate();
   const menuItem = [
     {
       path: "/",
@@ -39,19 +41,24 @@ const Sidebar = ({ setIsOpen, isOpen }) => {
       icon: <FaUserAlt size={27} />,
     },
   ];
+
+  const logoutHandler = async () => {
+    window.localStorage.clear();
+    fetch(`${BASEURL}/api/student/logout`, {
+      credentials: "include",
+    });
+    navigate("/");
+  };
   return (
     <>
       <div className="flex">
         <div
-          // style={{
-          //   width: isOpen ? "160px" : "55px",
-          // }}
           className={`sidebar overflow-hidden  ${
             isOpen ? "w-[160px] flex items-start " : "w-[55px] hidden sm:flex"
           }  flex-col items-start `}
         >
           <nav className="flex flex-col gap-1 items-center text-[24px] flex-1">
-            {menuItem.map((item, index) => (
+            {menuItem.map((item) => (
               <NavLink
                 to={item.path}
                 key={v4()}
@@ -69,6 +76,7 @@ const Sidebar = ({ setIsOpen, isOpen }) => {
             <button
               className="mt-auto mb-5 link self-start items-center w-full"
               type="button"
+              onClick={logoutHandler}
             >
               <IoLogOut size={27} />
               <div className="link_text">Logout</div>

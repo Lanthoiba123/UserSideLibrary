@@ -5,6 +5,7 @@ import { BASEURL } from "../constant";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHealth } from "react-icons/bi";
+import { Select } from "@mantine/core";
 import "./login.css";
 
 function Login() {
@@ -13,7 +14,6 @@ function Login() {
   const [userDetails, setUserDetatils] = useState({
     fullName: "",
     registrationNo: "",
-    branch: "",
     email: "",
     password: "",
   });
@@ -21,6 +21,13 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [role, setRole] = useState("");
+  const [userBranch, setUserBranch] = useState("");
+
+  // useEffect(() => {
+  //   console.log(role);
+  // }, [role]);
 
   const handleLoginDetails = (e) => {
     setLoginDetails((prevState) => {
@@ -36,12 +43,13 @@ function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userDetails);
+    // console.log(userDetails);
     const id = toast.loading("Please wait...");
+    console.log({ ...userDetails, role, branch: userBranch });
     fetch(`${BASEURL}/api/student`, {
       method: "POST",
       credentials: "include",
-      body: JSON.stringify(userDetails),
+      body: JSON.stringify({ ...userDetails, role, branch: userBranch }),
       headers: {
         "content-Type": "application/json",
       },
@@ -54,6 +62,7 @@ function Login() {
             type: "success",
             isLoading: false,
           });
+          window.localStorage.setItem("isLoggedIn", true);
 
           navigate("/otp");
         }
@@ -63,7 +72,6 @@ function Login() {
           email: "",
           password: "",
           registrationNo: "",
-          branch: "",
         });
       })
       .catch((err) => {
@@ -165,7 +173,7 @@ function Login() {
                 placeholder="Registration No."
               />
             </div>
-            <select
+            {/* <select
               className="input-field w-4/5"
               name="branch"
               onChange={handleInput}
@@ -179,7 +187,29 @@ function Login() {
                   {item.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+
+            <Select
+              className="w-[370px]  mb-4 "
+              radius="xl"
+              size="md"
+              placeholder="Select Branch"
+              data={branch.map((branch) => ({
+                value: branch._id,
+                label: branch.name,
+              }))}
+              value={branch ? branch.value : null}
+              onChange={(_value, option) => setUserBranch(option.value)}
+            />
+            <Select
+              className="w-[370px] "
+              radius="xl"
+              size="md"
+              placeholder="Pick student/teacher"
+              data={["Student", "Teacher"]}
+              value={role}
+              onChange={setRole}
+            />
             <div className="input-field">
               <MdEmail />
               <input
