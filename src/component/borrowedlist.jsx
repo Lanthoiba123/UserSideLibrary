@@ -77,7 +77,7 @@ const Borrowedlist = ({ isOpen }) => {
     const data = await res.json();
     console.log(data);
     // biome-ignore lint/complexity/noForEach: <explanation>
-    data.student.book_list.forEach((book) => {
+    data.student?.book_list.forEach((book) => {
       setBorrowedBook((prev) => [...prev, book.loan_id]);
       setFilter((prev) => [...prev, book.loan_id]);
     });
@@ -102,7 +102,7 @@ const Borrowedlist = ({ isOpen }) => {
       if (data.success) {
         toast.success(data.message);
       } else {
-        toast.error(data.message);
+        toast.error("Cannot renew again");
       }
     } catch (err) {
       toast.error(err.message);

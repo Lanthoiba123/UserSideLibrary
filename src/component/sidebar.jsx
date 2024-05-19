@@ -48,6 +48,7 @@ const Sidebar = ({ setIsOpen, isOpen }) => {
       credentials: "include",
     });
     navigate("/");
+    window.location.reload();
   };
   return (
     <>

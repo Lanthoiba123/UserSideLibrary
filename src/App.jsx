@@ -23,7 +23,7 @@ import { MantineProvider } from "@mantine/core";
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const isloggedIn = window.localStorage.getItem("isLoggedIn");
-  
+
   return (
     <MantineProvider>
       <ToastContainer autoClose={4000} />
