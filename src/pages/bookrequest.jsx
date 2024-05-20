@@ -93,21 +93,22 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setPending(false);
-    }, 800);
+    // const timeout = setTimeout(() => {
+    //   setPending(false);
+    // }, 800);
     const fetchRequestBook = async () => {
       try {
         const res = await fetch(`${BASEURL}/api/request`);
         const data = await res.json();
         console.log(data);
         setRecords(data.data);
+        setPending(false);
       } catch (error) {
         toast.error(error.message);
       }
     };
     fetchRequestBook();
-    return () => clearTimeout(timeout);
+    // return () => clearTimeout(timeout);
   }, []);
 
   const columns = [
