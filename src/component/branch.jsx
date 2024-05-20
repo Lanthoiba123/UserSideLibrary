@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const Branch = () => {
+const Branch = ({ isOpen }) => {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [records, setRecords] = useState([]);
@@ -71,16 +71,16 @@ const Branch = () => {
 
   return (
     <>
-      <div className="w-full  h-11 bg-white mt-[56px] fixed flex items-center">
+      <div className=" w-screen  h-11 bg-white sm:mt-[56px] mt-[55px] fixed flex sm:items-center items-center justify-around gap-6  ">
         <input
-          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
+          className="border rounded-2xl border-gray-600 placeholder:text-xs sm:ml-40 ml-2"
           type="text"
           value={searchTerm}
           onChange={handleInputChange}
           placeholder="Search book name..."
         />
         <Select onValueChange={handleBranchInput}>
-          <SelectTrigger className="h-7 w-[300px] ml-40 border rounded-2xl border-gray-600 px-2">
+          <SelectTrigger className="h-7 w-[300px] sm:ml-40 mr-3 border rounded-2xl border-gray-600 sm:px-2">
             <SelectValue placeholder="All Branch Books" />
           </SelectTrigger>
           <SelectContent>
@@ -100,14 +100,18 @@ const Branch = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className=" mt-[6em] grid items-stretch xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-y-[16px] gap-8 px-[40px] py-6 ">
+      <div
+        className={` ${
+          isOpen ? "grid-cols-1" : null
+        } sm:mt-[6em] mt-[6rem] grid   items-stretch xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-y-[16px] gap-8 px-[40px] py-6 grid-cols-2 `}
+      >
         {filteredBooks.map((book) => (
           <div
             key={book._id}
-            className="w-[12em]  flex flex-col  gap-y-1 rounded-md overflow-hidden"
+            className="sm:w-[12em] w-[150px]  h-30 flex flex-col  gap-y-1 rounded-md overflow-hidden"
           >
             <img
-              className="w-full h-[18em] object-cover rounded-md"
+              className="sm:w-full sm:h-[18em]   rounded-md"
               src={`https://drive.google.com/thumbnail?id=${book.image_url}`}
               alt="None"
             />

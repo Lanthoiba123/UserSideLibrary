@@ -416,9 +416,9 @@ const Borrowedlist = ({ isOpen }) => {
 
   return (
     <div>
-      <div className="bg-white flex flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
+      <div className="bg-white flex sm:flex-wrap  items-center p-2 gap-4 sm:mt-14 mt-0 fixed w-screen z-10 ">
         <input
-          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
+          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs sm:ml-40"
           type="text"
           onChange={handleFilter}
           placeholder="Search book name..."
@@ -439,7 +439,7 @@ const Borrowedlist = ({ isOpen }) => {
             }
           }}
         >
-          <SelectTrigger className="h-7 w-[180px] ml-40 border rounded-2xl border-gray-600 px-2">
+          <SelectTrigger className="h-7 w-[180px] sm:ml-40 border rounded-2xl border-gray-600 px-2">
             <SelectValue placeholder="Borrowed Book List" />
           </SelectTrigger>
           <SelectContent>
@@ -451,12 +451,12 @@ const Borrowedlist = ({ isOpen }) => {
         </Select>
       </div>
 
-      <div className=" lg:flex lg:justify-center transition-all md:flex md:justify-center ">
+      <div className=" lg:flex lg:justify-center transition-all md:flex md:justify-center  ">
         <div
-          className={` mt-[120px] rounded-xl  h-[80vh]  flex flex-col justify-start ${
+          className={` sm:mt-[120px] mt-[50px] pt-[60px] px-[20px] rounded-xl  h-[80vh]  flex flex-col justify-start w-screen ${
             !isOpen
-              ? "w-[90vw]  transition-all duration-1000 "
-              : "w-[80vw] transition-all duration-1000 "
+              ? "sm:w-[90vw]  transition-all duration-1000 "
+              : "sm:w-[80vw] transition-all duration-1000 "
           } `}
         >
           {renewColumnShow ? (

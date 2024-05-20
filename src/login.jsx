@@ -93,19 +93,27 @@ function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.success) {
           toast.update(id, {
             render: "All is good",
             type: "success",
             isLoading: false,
+            duration: 2000,
           });
           window.localStorage.setItem("isLoggedIn", true);
-
           window.location.reload();
+        } else {
+          toast.update(id, {
+            render: data.err,
+            type: "error",
+            isLoading: false,
+            duration: 2000,
+          });
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
 
