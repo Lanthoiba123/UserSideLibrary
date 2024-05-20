@@ -8,14 +8,14 @@ function Headerbar({ setIsOpen, isOpen }) {
     <div className="flex bg-blue-500 p-2 items-center z-10 fixed w-screen top-0 left-0">
       <Burger
         opened={opened}
-        size="lg"
+        size="md"
         className="h-8 "
         onClick={() => {
           setIsOpen(!isOpen);
           toggle();
         }}
       />
-      <div className="ml-auto text-white text-2xl  font-medium flex items-center">
+      <div className="ml-auto text-white sm:text-2xl text-lg  font-medium flex items-center">
         LIBRARY MANAGEMENT SYSTEM
       </div>
 

@@ -279,9 +279,9 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
   };
   return (
     <>
-      <div className="bg-white flex flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
+      <div className="bg-white flex sm:flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
         <input
-          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
+          className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs sm:ml-40"
           type="text"
           onChange={handleFilter}
           placeholder="Search book name..."
@@ -293,7 +293,7 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
           className="border rounded-2xl border-gray-600 px-2"
         />
         <Dialog>
-          <DialogTrigger className="bg-gray-200 p-1  rounded-2xl border-gray-600 px-2 ml-10 cursor-pointer">
+          <DialogTrigger className="bg-gray-200 p-1  rounded-2xl border-gray-600 sm:px-2 sm:ml-10 cursor-pointer sm:text-lg text-sm">
             New Book Request
           </DialogTrigger>
           <DialogContent className="">
@@ -345,11 +345,11 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
 
       <div className=" lg:flex lg:justify-center md:flex md:justify-center ">
         <div
-          className={` mt-[120px] rounded-xl  h-[80vh]  flex flex-col justify-start ${
+          className={` mt-[120px] rounded-xl  h-[80vh]  flex flex-col px-2 pt-2 justify-start ${
             !isOpen
-              ? "w-[90vw]  transition-all duration-1000 "
-              : "w-[80vw] transition-all duration-1000 "
-          } `}
+              ? "sm:w-[90vw]  transition-all duration-1000 "
+              : "sm:w-[80vw] transition-all duration-1000 "
+          } w-screen`}
         >
           <DataTable
             customStyles={customStyles}

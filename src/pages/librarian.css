@@ -1,5 +1,6 @@
 .container1 {
-  width: 1000px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -84,4 +85,32 @@
 
 .card:hover {
   box-shadow: lightgrey;
+}
+
+@media only screen and (max-width: 480px) {
+
+  /* Your CSS rules for large screens on mobile devices go here */
+  /* For example: */
+  .container1 {
+    /* background-color: red; */
+    margin-left: 10px;
+    margin-right: 0px;
+    display: grid;
+    /* margin-top: 3rem; */
+    grid-template-columns: repeat(2, 190px);
+    grid-template-rows: repeat(2, 300px);
+    place-items: center;
+    /* padding-left: 1rem; */
+  }
+
+  .card {
+    /* padding-left: 10px; */
+    width: 100%;
+    left: 0;
+    height: 280px;
+  }
+
+  .content {
+    width: 100%;
+  }
 }
