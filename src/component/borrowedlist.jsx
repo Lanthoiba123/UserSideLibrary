@@ -416,7 +416,7 @@ const Borrowedlist = ({ isOpen }) => {
 
   return (
     <div>
-      <div className="bg-white flex sm:flex-wrap  items-center p-2 gap-4 sm:mt-14 mt-0 fixed w-screen z-10 ">
+      <div className="bg-white flex sm:flex-wrap  items-center p-2 gap-4 sm:mt-14 mt-[7px] fixed w-screen z-10 ">
         <input
           className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs sm:ml-40"
           type="text"
