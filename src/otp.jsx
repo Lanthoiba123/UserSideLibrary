@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BASEURL } from "../constant";
 function Otp() {
   const [otp, setOtp] = useState(new Array(4).fill(""));
 
@@ -31,10 +32,9 @@ function Otp() {
     const stringOtp = otp.join("");
     console.log(stringOtp);
     const objectOtp = {
-      email: "lanthoiba_k20@mtu.ac.in",
       otp: stringOtp,
     };
-    fetch("https://library-mtu.vercel.app/api/student/verify", {
+    fetch(`${BASEURL}/api/student/verify`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(objectOtp),
@@ -44,8 +44,12 @@ function Otp() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success === true) {
-          navigate("/books");
+        console.log(data);
+        if (data.success) {
+          window.localStorage.setItem("isLoggedIn", true);
+          navigate("/");
+          window.location.reload();
+
           // toast("Otp Verified");
         }
       });

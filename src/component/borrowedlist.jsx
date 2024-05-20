@@ -2,18 +2,18 @@ import DataTable, { createTheme } from "react-data-table-component";
 import styled, { keyframes } from "styled-components";
 import "./borrowedlist.css";
 import { format } from "date-fns";
-import { data } from "./data";
 import { useState, useEffect } from "react";
 import { BASEURL } from "../../constant";
+
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "react-toastify";
 
 const rotate360 = keyframes`
   from {
@@ -53,71 +53,125 @@ const CustomLoader = () => (
     </div>
   </div>
 );
-const Borrowedlist = () => {
-  const [pending, setPending] = useState(true);
 
-  useEffect(() => {
-    const fetchBorrowedBook = async () => {
-      const res = await fetch(`${BASEURL}/api/student/profile`);
+const Borrowedlist = ({ isOpen }) => {
+  const [pending, setPending] = useState(true);
+  const [renewColumnShow, setRenewColumn] = useState(true);
+  const [borrowedBook, setBorrowedBook] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [renewBook, setRenewBook] = useState([]);
+
+  const fetchRenewBook = async () => {
+    const res = await fetch(`${BASEURL}/api/renew`, {
+      credentials: "include",
+    });
+    const data = await res.json();
+    setRenewBook(data.data);
+    setPending(false);
+  };
+
+  const fetchBorrowedBook = async () => {
+    const res = await fetch(`${BASEURL}/api/student/profile`, {
+      credentials: "include",
+    });
+    const data = await res.json();
+    console.log(data);
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    data.student?.book_list.forEach((book) => {
+      setBorrowedBook((prev) => [...prev, book.loan_id]);
+      setFilter((prev) => [...prev, book.loan_id]);
+    });
+    setPending(false);
+  };
+
+  const addRenewBook = async (loan_id) => {
+    try {
+      console.log(loan_id);
+      const res = await fetch(`${BASEURL}/api/renew`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          loan_id: loan_id,
+        }),
+        headers: {
+          "content-Type": "application/json",
+        },
+      });
       const data = await res.json();
-      setBorrowedBook(data.data);
-    };
-    const timeout = setTimeout(() => {
-      setPending(false);
-    }, 800);
-    return () => clearTimeout(timeout);
+      console.log(data);
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error("Cannot renew again");
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    fetchBorrowedBook();
   }, []);
 
   const columns = [
     {
-      name: "Sl.No",
-      selector: (row) => row.sl,
-      sortable: true,
-      width: "82px",
+      name: "Sl.no",
+      cell: (row, index) => index + 1, //RDT provides index by default
     },
     {
       name: "Name of Books",
-      selector: (row) => row.books,
+      selector: (row) => row?.book_title,
       sortable: true,
       wrap: true,
       width: "190px",
     },
     {
       name: "Name of Authors",
-      selector: (row) => row.authors,
+      selector: (row) => row?.book_author,
       sortable: true,
       wrap: true,
       width: "160px",
     },
     {
       name: "Book Id",
-      selector: (row) => row.id,
+      selector: (row) => row?.book_id,
       sortable: true,
       wrap: true,
       width: "110px",
     },
     {
       name: "Date of Taken",
-      selector: (row) => format(new Date(row.taken), "dd/MM/yyyy"),
+      selector: (row) =>
+        row?.loanDate ? format(new Date(row?.loanDate), "dd/MM/yyyy") : "---",
       sortable: true,
       wrap: true,
       width: "139px",
     },
     {
       name: "Date of Return",
-      selector: (row) => format(new Date(row.return), "dd/MM/yyyy"),
+      selector: (row) =>
+        row?.returnDate
+          ? format(new Date(row?.returnDate), "dd/MM/yyyy")
+          : "---",
       sortable: true,
       wrap: true,
       width: "143px",
     },
     {
       name: "Date of Submit",
-      selector: (row) => format(new Date(row.submit), "dd/MM/yyyy"),
+      selector: (row) =>
+        row?.submitDate !== null
+          ? format(new Date(row?.submitDate), "dd/MM/yyyy")
+          : "---",
       sortable: true,
       wrap: true,
       width: "145px",
     },
     {
+      selector: (row) => row.remark,
+      sortable: true,
+      width: "125px",
       cell: (row) => {
         let backgroundColor;
         if (row.remark === "Submitted") {
@@ -137,9 +191,6 @@ const Borrowedlist = () => {
         );
       },
       name: "Remark",
-      selector: (row) => row.remark,
-      sortable: true,
-      width: "125px",
     },
     {
       cell: (row) =>
@@ -147,18 +198,100 @@ const Borrowedlist = () => {
           <button
             type="submit"
             className="bg-blue-500 p-1.5 rounded-lg w-full text-white"
+            onClick={() => addRenewBook(row._id)}
           >
             Renew
           </button>
         ),
       name: "Request",
-      selector: (row) => row.request,
+      // selector: (row) => row.request,
       sortable: true,
       width: "102px",
       // button: true,
     },
   ];
   // pagination color change
+  const renewColumn = [
+    {
+      name: "Sl.no",
+      cell: (row, index) => index + 1, //RDT provides index by default
+    },
+    {
+      name: "Name of Books",
+      selector: (row) => row?.loan_id?.book_title,
+      sortable: true,
+      wrap: true,
+      width: "190px",
+    },
+    {
+      name: "Name of Authors",
+      selector: (row) => row?.loan_id?.book_author,
+      sortable: true,
+      wrap: true,
+      width: "160px",
+    },
+    {
+      name: "Book Id",
+      selector: (row) => row?.loan_id?.book_id,
+      sortable: true,
+      wrap: true,
+      width: "110px",
+    },
+    {
+      name: "Date of Taken",
+      selector: (row) =>
+        row?.loan_id?.loanDate
+          ? format(new Date(row?.loan_id?.loanDate), "dd/MM/yyyy")
+          : "---",
+      sortable: true,
+      wrap: true,
+      width: "139px",
+    },
+    {
+      name: "Date of Return",
+      selector: (row) =>
+        row?.loan_id?.returnDate
+          ? format(new Date(row?.loan_id?.returnDate), "dd/MM/yyyy")
+          : "---",
+      sortable: true,
+      wrap: true,
+      width: "143px",
+    },
+    {
+      name: "Date of Renew",
+      selector: (row) =>
+        row?.renew_date !== null
+          ? format(new Date(row?.renew_date), "dd/MM/yyyy")
+          : "---",
+      sortable: true,
+      wrap: true,
+      width: "145px",
+    },
+    {
+      cell: (row) => {
+        let backgroundColor;
+        if (row.remark === "accept") {
+          backgroundColor = "bg-green-600";
+        } else if (row.remark === "reject") {
+          backgroundColor = "bg-red-600";
+        } else {
+          backgroundColor = "bg-[#1db4ff]";
+        }
+
+        return (
+          <div
+            className={`p-2 w-full ${backgroundColor} text-white rounded-lg`}
+          >
+            {row.remark}
+          </div>
+        );
+      },
+      name: "Remark",
+      selector: (row) => row.remark,
+      sortable: true,
+      width: "125px",
+    },
+  ];
 
   createTheme("solarized", {
     text: {
@@ -249,26 +382,40 @@ const Borrowedlist = () => {
       },
     },
   ];
-  const [records, setRecords] = useState(data);
   function handleFilter(event) {
     console.log(event.target.value);
-    const newData = data.filter((row) => {
-      return row.books.toLowerCase().includes(event.target.value.toLowerCase());
+    if (event.target.value.length === 0) {
+      setFilter(borrowedBook);
+    }
+    const newData = borrowedBook.filter((row) => {
+      return row?.book_title
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());
     });
-    setRecords(newData);
+    console.log(newData);
+    setFilter(newData);
   }
 
   const handleFilterChange = (event) => {
     console.log(event.target.value);
-    const searchDate = Date.parse(event.target.value);
-    const newData = data.filter((row) => {
-      const takenDate = new Date(row.taken);
-      return takenDate.getTime() === searchDate;
+    const searchDate = new Date(event.target.value);
+    console.log(borrowedBook);
+    const newData = borrowedBook.filter((row) => {
+      const takenDate = new Date(row?.loanDate);
+      console.log(`${takenDate.getDate()}--taken date`);
+      console.log(`${searchDate.getDate()}--search date`);
+      return (
+        takenDate.getDate() === searchDate.getDate() &&
+        takenDate.getMonth() === searchDate.getMonth() &&
+        takenDate.getFullYear() === searchDate.getFullYear()
+      );
     });
-    setRecords(newData);
+    console.log(newData);
+    setFilter(newData);
   };
+
   return (
-    <>
+    <div>
       <div className="bg-white flex flex-wrap  items-center p-2 gap-4 mt-14 fixed w-screen z-10 ">
         <input
           className="border rounded-2xl border-gray-600 pl-3 placeholder:text-xs ml-40"
@@ -282,45 +429,64 @@ const Borrowedlist = () => {
           onChange={handleFilterChange}
           className="border rounded-2xl border-gray-600 px-2"
         />{" "}
-        <Select>
+        <Select
+          onValueChange={(value) => {
+            if (value === "borrowList") {
+              window.location.reload();
+            } else {
+              setRenewColumn(false);
+              fetchRenewBook();
+            }
+          }}
+        >
           <SelectTrigger className="h-7 w-[180px] ml-40 border rounded-2xl border-gray-600 px-2">
             <SelectValue placeholder="Borrowed Book List" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>List</SelectLabel>
-              <SelectItem value="borrowedlist">Borrowed Book List</SelectItem>
+              <SelectItem value="borrowList">Borrowed Book List</SelectItem>
               <SelectItem value="renewlist">Renew Book List</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
 
-      <div className=" lg:flex lg:justify-center md:flex md:justify-center ">
+      <div className=" lg:flex lg:justify-center transition-all md:flex md:justify-center ">
         <div
-          className=" mt-[120px] rounded-xl "
-          style={{
-            width: "80vw",
-            height: "80vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-          }}
+          className={` mt-[120px] rounded-xl  h-[80vh]  flex flex-col justify-start ${
+            !isOpen
+              ? "w-[90vw]  transition-all duration-1000 "
+              : "w-[80vw] transition-all duration-1000 "
+          } `}
         >
-          <DataTable
-            customStyles={customStyles}
-            theme="solarized"
-            conditionalRowStyles={conditionalRowStyles}
-            columns={columns}
-            data={records}
-            fixedHeader
-            progressPending={pending}
-            progressComponent={<CustomLoader />}
-            pagination
-          />
+          {renewColumnShow ? (
+            <DataTable
+              customStyles={customStyles}
+              theme="solarized"
+              conditionalRowStyles={conditionalRowStyles}
+              columns={columns}
+              data={filter}
+              fixedHeader
+              progressPending={pending}
+              progressComponent={<CustomLoader />}
+              pagination
+            />
+          ) : (
+            <DataTable
+              customStyles={customStyles}
+              theme="solarized"
+              conditionalRowStyles={conditionalRowStyles}
+              columns={renewColumn}
+              data={renewBook}
+              fixedHeader
+              progressPending={pending}
+              progressComponent={<CustomLoader />}
+              pagination
+            />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

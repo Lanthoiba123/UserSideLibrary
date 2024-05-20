@@ -5,6 +5,7 @@ import { BASEURL } from "../constant";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHealth } from "react-icons/bi";
+import { Select } from "@mantine/core";
 import "./login.css";
 
 function Login() {
@@ -13,10 +14,26 @@ function Login() {
   const [userDetails, setUserDetatils] = useState({
     fullName: "",
     registrationNo: "",
-    branch: "",
     email: "",
     password: "",
   });
+  const [loginDetails, setLoginDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [role, setRole] = useState("");
+  const [userBranch, setUserBranch] = useState("");
+
+  // useEffect(() => {
+  //   console.log(role);
+  // }, [role]);
+
+  const handleLoginDetails = (e) => {
+    setLoginDetails((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  };
 
   function handleInput(event) {
     setUserDetatils((prevState) => {
@@ -26,12 +43,13 @@ function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userDetails);
+    // console.log(userDetails);
     const id = toast.loading("Please wait...");
+    console.log({ ...userDetails, role, branch: userBranch });
     fetch(`${BASEURL}/api/student`, {
       method: "POST",
       credentials: "include",
-      body: JSON.stringify(userDetails),
+      body: JSON.stringify({ ...userDetails, role, branch: userBranch }),
       headers: {
         "content-Type": "application/json",
       },
@@ -44,6 +62,8 @@ function Login() {
             type: "success",
             isLoading: false,
           });
+          window.localStorage.setItem("isLoggedIn", true);
+
           navigate("/otp");
         }
         console.log(data);
@@ -52,13 +72,42 @@ function Login() {
           email: "",
           password: "",
           registrationNo: "",
-          branch: "",
         });
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    console.log(loginDetails);
+    const id = toast.loading("Please wait...");
+    fetch(`${BASEURL}/api/student/login`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(loginDetails),
+      headers: {
+        "content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.update(id, {
+            render: "All is good",
+            type: "success",
+            isLoading: false,
+          });
+          window.localStorage.setItem("isLoggedIn", true);
+
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const [branch, setBranch] = useState([]);
   // // const [email, setBranch] = useState("");
@@ -87,8 +136,8 @@ function Login() {
               <input
                 type="text"
                 name="email"
-                onChange={handleInput}
-                placeholder="Username"
+                onChange={handleLoginDetails}
+                placeholder="email"
               />
             </div>
             <div className="input-field">
@@ -96,11 +145,13 @@ function Login() {
               <input
                 type="password"
                 name="password"
-                onChange={handleInput}
+                onChange={handleLoginDetails}
                 placeholder="Password"
               />
             </div>
-            <input type="submit" value="Login" className="btn solid" />
+            <button type="submit" onClick={loginSubmit} className="btn solid">
+              Login
+            </button>
           </form>
           <form onSubmit={handleSubmit} className="sign-up-form">
             <h2 className="title">Sign up</h2>
@@ -122,13 +173,13 @@ function Login() {
                 placeholder="Registration No."
               />
             </div>
-            <select
-              className="input-field"
+            {/* <select
+              className="input-field w-4/5"
               name="branch"
               onChange={handleInput}
               id=""
             >
-              <option value="" className="text-slate-100">
+              <option value="" className="text-slate-100 text-left w-3/4">
                 Select Branch
               </option>
               {branch.map((item) => (
@@ -136,7 +187,29 @@ function Login() {
                   {item.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+
+            <Select
+              className="w-[370px]  mb-4 "
+              radius="xl"
+              size="md"
+              placeholder="Select Branch"
+              data={branch.map((branch) => ({
+                value: branch._id,
+                label: branch.name,
+              }))}
+              value={branch ? branch.value : null}
+              onChange={(_value, option) => setUserBranch(option.value)}
+            />
+            <Select
+              className="w-[370px] "
+              radius="xl"
+              size="md"
+              placeholder="Pick student/teacher"
+              data={["Student", "Teacher"]}
+              value={role}
+              onChange={setRole}
+            />
             <div className="input-field">
               <MdEmail />
               <input

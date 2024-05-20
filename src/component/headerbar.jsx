@@ -1,17 +1,20 @@
-import { useState } from "react";
-function Headerbar({ toggle, setIsOpen, isOpen }) {
+import { useDisclosure } from "@mantine/hooks";
+import { Burger } from "@mantine/core";
+
+function Headerbar({ setIsOpen, isOpen }) {
+  const [opened, { toggle }] = useDisclosure();
+
   return (
-    <div className="flex bg-blue-500 p-2  rounded z-10 fixed w-screen top-0 left-0">
-      <div
+    <div className="flex bg-blue-500 p-2 items-center z-10 fixed w-screen top-0 left-0">
+      <Burger
+        opened={opened}
+        size="lg"
+        className="h-8 "
         onClick={() => {
           setIsOpen(!isOpen);
+          toggle();
         }}
-        className="p-2 flex flex-col gap-1 "
-      >
-        <div className="w-7 h-1 bg-gray-600 rounded" />
-        <div className="w-7 h-1 bg-gray-600 rounded" />
-        <div className="w-7 h-1 bg-gray-600 rounded" />
-      </div>
+      />
       <div className="ml-auto text-white text-2xl  font-medium flex items-center">
         LIBRARY MANAGEMENT SYSTEM
       </div>
