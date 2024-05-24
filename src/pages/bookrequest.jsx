@@ -63,6 +63,7 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
   const requestBookHandler = async (e) => {
     try {
       e.preventDefault();
+      const token = window.localStorage.getItem('token')
       const requestData = {
         title: requestTitle,
         author: requestAuthor,
@@ -71,10 +72,11 @@ const Bookrequest = ({ isOpen, setIsOpen }) => {
 
       const res = await fetch(`${BASEURL}/api/request`, {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify(requestData),
         headers: {
           "content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
       });
       const data = await res.json();

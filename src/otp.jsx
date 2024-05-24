@@ -31,15 +31,17 @@ function Otp() {
     console.log(otp);
     const stringOtp = otp.join("");
     console.log(stringOtp);
+    const token=window.localStorage.getItem('token')
     const objectOtp = {
       otp: stringOtp,
     };
     fetch(`${BASEURL}/api/student/verify`, {
       method: "POST",
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify(objectOtp),
       headers: {
         "content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     })
       .then((res) => res.json())

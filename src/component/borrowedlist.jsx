@@ -60,10 +60,15 @@ const Borrowedlist = ({ isOpen }) => {
   const [borrowedBook, setBorrowedBook] = useState([]);
   const [filter, setFilter] = useState([]);
   const [renewBook, setRenewBook] = useState([]);
+  const token=window.localStorage.getItem('token')
 
   const fetchRenewBook = async () => {
     const res = await fetch(`${BASEURL}/api/renew`, {
-      credentials: "include",
+      method:"GET",
+      headers:{
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }
     });
     const data = await res.json();
     setRenewBook(data.data);
@@ -72,7 +77,11 @@ const Borrowedlist = ({ isOpen }) => {
 
   const fetchBorrowedBook = async () => {
     const res = await fetch(`${BASEURL}/api/student/profile`, {
-      credentials: "include",
+      method:"GET",
+      headers:{
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }
     });
     const data = await res.json();
     console.log(data);
@@ -433,6 +442,8 @@ const Borrowedlist = ({ isOpen }) => {
           onValueChange={(value) => {
             if (value === "borrowList") {
               window.location.reload();
+              // fetchBorrowedBook()
+              // setRenewColumn(true)
             } else {
               setRenewColumn(false);
               fetchRenewBook();
@@ -453,7 +464,7 @@ const Borrowedlist = ({ isOpen }) => {
 
       <div className=" lg:flex lg:justify-center transition-all md:flex md:justify-center  ">
         <div
-          className={` sm:mt-[120px] mt-[50px] pt-[60px] px-[20px] rounded-xl  h-[80vh]  flex flex-col justify-start w-screen ${
+          className={` sm:mt-[110px] md:mt-[70px] mt-[50px] pt-[60px] px-[20px] rounded-xl  h-[80vh]  flex flex-col justify-start w-screen ${
             !isOpen
               ? "sm:w-[90vw]  transition-all duration-1000 "
               : "sm:w-[80vw] transition-all duration-1000 "

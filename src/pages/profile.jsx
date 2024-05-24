@@ -8,9 +8,15 @@ function Profile({ setIsOpen, isOpen }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchProfile = async () => {
+      const token=window.localStorage.getItem('token')
       try {
         const res = await fetch(`${BASEURL}/api/student/profile`, {
-          credentials: "include",
+          // credentials: "include",
+          method:"GET",
+          headers:{
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
         });
         const data = await res.json();
         console.log(data.student);
@@ -25,11 +31,11 @@ function Profile({ setIsOpen, isOpen }) {
   return (
     <div className="mt-14 h-[calc(100vh-56px)] pt-14 flex justify-center items-start ">
       {loading ? (
-        <div class="flex space-x-2 justify-center items-center w-3/4  bg-blue-200 h-40 border border-black rounded-md dark:invert">
-          <span class="sr-only">Loading...</span>
-          <div class="h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]" />
-          <div class="h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]" />
-          <div class="h-4 w-4 bg-black rounded-full animate-bounce" />
+        <div className="flex space-x-2 justify-center items-center w-3/4  bg-blue-200 h-40 border border-black rounded-md dark:invert">
+          <span className="sr-only">Loading...</span>
+          <div className="h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]" />
+          <div className="h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]" />
+          <div className="h-4 w-4 bg-black rounded-full animate-bounce" />
         </div>
       ) : (
         <div className="border flex justify-around items-center border-black p-4 bg-blue-200 w-3/4 rounded-md">
