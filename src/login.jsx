@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { BASEURL } from "../constant";
+import { BASEURL } from "../constant.js";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { BiHealth } from "react-icons/bi";
@@ -48,7 +48,7 @@ function Login() {
     console.log({ ...userDetails, role, branch: userBranch });
     fetch(`${BASEURL}/api/student`, {
       method: "POST",
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({ ...userDetails, role, branch: userBranch }),
       headers: {
         "content-Type": "application/json",
@@ -63,8 +63,17 @@ function Login() {
             isLoading: false,
           });
           window.localStorage.setItem("isLoggedIn", true);
+          window.localStorage.setItem('token',data.token)
 
           navigate("/otp");
+        }
+        else{
+          toast.update(id,{
+            render: data.err,
+            type: "error",
+            isLoading: false,
+            duration: 2000,
+          })
         }
         console.log(data);
         setUserDetatils({
@@ -73,7 +82,10 @@ function Login() {
           password: "",
           registrationNo: "",
         });
+        
+        
       })
+
       .catch((err) => {
         console.log(err);
       });
@@ -85,7 +97,7 @@ function Login() {
     const id = toast.loading("Please wait...");
     fetch(`${BASEURL}/api/student/login`, {
       method: "POST",
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify(loginDetails),
       headers: {
         "content-Type": "application/json",
@@ -102,6 +114,7 @@ function Login() {
             duration: 2000,
           });
           window.localStorage.setItem("isLoggedIn", true);
+          window.localStorage.setItem("token",data.token)
           window.location.reload();
         } else {
           toast.update(id, {
@@ -145,6 +158,7 @@ function Login() {
                 type="text"
                 name="email"
                 onChange={handleLoginDetails}
+                pattern="^[a-zA-Z0-9._%+-]+@mtu\.ac\.in$"
                 placeholder="email"
               />
             </div>
@@ -223,6 +237,7 @@ function Login() {
               <input
                 type="email"
                 name="email"
+                pattern="^[a-zA-Z0-9._%+-]+@mtu\.ac\.in$"
                 onChange={handleInput}
                 placeholder="Email"
               />

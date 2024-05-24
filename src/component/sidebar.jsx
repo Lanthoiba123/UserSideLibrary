@@ -44,10 +44,11 @@ const Sidebar = ({ setIsOpen, isOpen }) => {
 
   const logoutHandler = async () => {
     window.localStorage.clear();
-    fetch(`${BASEURL}/api/student/logout`, {
-      credentials: "include",
-    });
+    // fetch(`${BASEURL}/api/student/logout`, {
+    //   credentials: "include",
+    // });
     navigate("/");
+    // window.localStorage.clear()
     window.location.reload();
   };
   return (

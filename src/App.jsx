@@ -22,7 +22,7 @@ import { MantineProvider } from "@mantine/core";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const isloggedIn = window.localStorage.getItem("isLoggedIn");
+  const isloggedIn = window.localStorage.getItem("token");
 
   return (
     <MantineProvider>
