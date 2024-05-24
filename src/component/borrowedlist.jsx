@@ -462,13 +462,13 @@ const Borrowedlist = ({ isOpen }) => {
         </Select>
       </div>
 
-      <div className=" lg:flex lg:justify-center transition-all md:flex md:justify-center  ">
+      <div className=" lg:flex lg:justify-center md:flex md:justify-center ">
         <div
-          className={` sm:mt-[110px] md:mt-[70px] mt-[50px] pt-[60px] px-[20px] rounded-xl  h-[80vh]  flex flex-col justify-start w-screen ${
+          className={` sm:mt-[0px] mt-[50px]  rounded-xl  h-[80vh]  flex flex-col px-2 pt-20 sm:pt-36 justify-start ${
             !isOpen
               ? "sm:w-[90vw]  transition-all duration-1000 "
               : "sm:w-[80vw] transition-all duration-1000 "
-          } `}
+          } w-screen`}
         >
           {renewColumnShow ? (
             <DataTable
