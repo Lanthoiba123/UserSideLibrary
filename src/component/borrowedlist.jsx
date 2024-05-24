@@ -98,12 +98,13 @@ const Borrowedlist = ({ isOpen }) => {
       console.log(loan_id);
       const res = await fetch(`${BASEURL}/api/renew`, {
         method: "POST",
-        credentials: "include",
+        // credentials: "include"d
         body: JSON.stringify({
           loan_id: loan_id,
         }),
         headers: {
           "content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
       });
       const data = await res.json();
