@@ -112,7 +112,7 @@ const Branch = ({ isOpen }) => {
           >
             <img
               className="sm:w-full sm:h-[18em]   rounded-md"
-              src={`https://drive.google.com/thumbnail?id=${book.image_url}`}
+              src={`https://drive.google.com/thumbnail?id=${book.image_url}&sz=w1000-h1000`}
               alt="None"
             />
             <div className="bg-white px-3 py-1 h-full flex flex-col justify-center items-start text-sm rounded-md font-sans">
