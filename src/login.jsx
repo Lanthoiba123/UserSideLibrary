@@ -40,11 +40,26 @@ function Login() {
       return { ...prevState, [event.target.name]: event.target.value };
     });
   }
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@mtu\.ac\.in$/;
+
+  function isEmailValid(email) {
+    return emailPattern.test(email);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
     // console.log(userDetails);
     const id = toast.loading("Please wait...");
+    if (!isEmailValid(userDetails.email)) {
+      toast.update(id, {
+        render: "Email is not valid",
+        type: "error",
+        isLoading: false,
+        duration: 2000,
+      });
+      return;
+    }
+
     console.log({ ...userDetails, role, branch: userBranch });
     fetch(`${BASEURL}/api/student`, {
       method: "POST",
@@ -63,17 +78,16 @@ function Login() {
             isLoading: false,
           });
           window.localStorage.setItem("isLoggedIn", true);
-          window.localStorage.setItem('token',data.token)
+          window.localStorage.setItem("token", data.token);
 
           navigate("/otp");
-        }
-        else{
-          toast.update(id,{
-            render: data.err,
+        } else {
+          toast.update(id, {
+            render: data.message,
             type: "error",
             isLoading: false,
             duration: 2000,
-          })
+          });
         }
         console.log(data);
         setUserDetatils({
@@ -82,8 +96,6 @@ function Login() {
           password: "",
           registrationNo: "",
         });
-        
-        
       })
 
       .catch((err) => {
@@ -114,7 +126,7 @@ function Login() {
             duration: 2000,
           });
           window.localStorage.setItem("isLoggedIn", true);
-          window.localStorage.setItem("token",data.token)
+          window.localStorage.setItem("token", data.token);
           window.location.reload();
         } else {
           toast.update(id, {
@@ -158,7 +170,6 @@ function Login() {
                 type="text"
                 name="email"
                 onChange={handleLoginDetails}
-                pattern="^[a-zA-Z0-9._%+-]+@mtu\.ac\.in$"
                 placeholder="email"
               />
             </div>
