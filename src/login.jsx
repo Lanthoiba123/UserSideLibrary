@@ -83,7 +83,7 @@ function Login() {
           navigate("/otp");
         } else {
           toast.update(id, {
-            render: data.message,
+            render: data.err,
             type: "error",
             isLoading: false,
             duration: 2000,
@@ -118,6 +118,7 @@ function Login() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        //library-mtu.vercel.app
         if (data.success) {
           toast.update(id, {
             render: "All is good",
@@ -248,7 +249,6 @@ function Login() {
               <input
                 type="email"
                 name="email"
-                pattern="^[a-zA-Z0-9._%+-]+@mtu\.ac\.in$"
                 onChange={handleInput}
                 placeholder="Email"
               />
